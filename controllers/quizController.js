@@ -53,7 +53,7 @@ exports.showQuestion = async (req, res) => {
 exports.submitAnswer = async (req, res) => {
   try {
     const { answer } = req.body;
-    const { questions, currentQuestionIndex, sessionId } = req.session;
+    const { questions, currentQuestionIndex, sessionId, score, correctAnswers } = req.session;
 
     if (!questions || currentQuestionIndex >= questions.length) {
       return res.json({ error: 'Session invalide' });
@@ -65,20 +65,27 @@ exports.submitAnswer = async (req, res) => {
     // Sauvegarder la réponse
     await QuizSession.saveAnswer(sessionId, currentQuestion.id, answer, isCorrect);
 
-    // Mettre à jour le score
+    // Mettre à jour le score (cookie-session nécessite de ré-assigner)
+    let newScore = score || 0;
+    let newCorrectAnswers = correctAnswers || 0;
+
     if (isCorrect) {
-      req.session.correctAnswers++;
-      req.session.score += config.quiz.pointsPerCorrectAnswer;
+      newCorrectAnswers = newCorrectAnswers + 1;
+      newScore = newScore + config.quiz.pointsPerCorrectAnswer;
     }
 
+    req.session.correctAnswers = newCorrectAnswers;
+    req.session.score = newScore;
+
     // Passer à la question suivante
-    req.session.currentQuestionIndex++;
+    const newQuestionIndex = currentQuestionIndex + 1;
+    req.session.currentQuestionIndex = newQuestionIndex;
 
     res.json({
       correct: isCorrect,
       correctAnswer: currentQuestion.correct_answer,
-      score: req.session.score,
-      nextQuestion: req.session.currentQuestionIndex < questions.length
+      score: newScore,
+      nextQuestion: newQuestionIndex < questions.length
     });
   } catch (error) {
     console.error('Erreur lors de la soumission de la réponse:', error);

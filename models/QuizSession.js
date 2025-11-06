@@ -38,7 +38,7 @@ class QuizSession {
     await db.connect();
     await db.run(
       `UPDATE quiz_sessions
-       SET completed_at = CURRENT_TIMESTAMP
+       SET completed_at = NOW()
        WHERE id = ?`,
       [sessionId]
     );
