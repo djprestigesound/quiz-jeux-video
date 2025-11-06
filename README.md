@@ -2,6 +2,19 @@
 
 Application de quiz interactive sur les jeux vidéo, conçue pour les événements. Les participants peuvent accéder au quiz via un QR code et jouer en temps réel.
 
+## 🌐 Site en ligne (Production)
+
+**URL principale** : https://quiz-jeux-video.vercel.app
+
+### Liens importants
+
+- **🎮 Quiz** : https://quiz-jeux-video.vercel.app
+- **📱 QR Code** : https://quiz-jeux-video.vercel.app/qrcode
+- **👨‍💼 Administration** : https://quiz-jeux-video.vercel.app/admin
+- **🏆 Classement** : https://quiz-jeux-video.vercel.app/quiz/leaderboard
+
+**Mot de passe admin** : `admin123`
+
 ## Fonctionnalités
 
 - 🎮 Quiz interactif avec questions à choix multiples
@@ -9,8 +22,9 @@ Application de quiz interactive sur les jeux vidéo, conçue pour les événemen
 - 🏆 Système de scoring et classement en temps réel
 - 📱 Accès via QR code
 - 👨‍💼 Interface d'administration complète
-- 💾 Base de données locale (SQLite)
-- 🎨 Interface moderne et responsive
+- 💾 Base de données PostgreSQL (production) / SQLite (local)
+- 🎨 Design Tron avec effets néon et cyber futuriste
+- ☁️ Déployé sur Vercel (100% gratuit)
 
 ## Installation
 
@@ -73,12 +87,22 @@ quiz-jeux-video/
 
 ## Utilisation lors d'un événement
 
-1. Démarrez le serveur sur un ordinateur local
-2. Connectez-vous à l'administration
-3. Générez et affichez le QR code
-4. Les participants scannent le QR code avec leur smartphone
-5. Ils entrent leur pseudo et jouent
-6. Consultez les résultats et le classement en temps réel
+### Version en ligne (recommandée)
+
+1. Ouvrez https://quiz-jeux-video.vercel.app/qrcode
+2. Affichez le QR code sur un écran ou imprimez-le
+3. Les participants scannent le QR code avec leur smartphone (4G/5G)
+4. Ils entrent leur pseudo et jouent immédiatement
+5. Consultez les résultats en temps réel sur https://quiz-jeux-video.vercel.app/admin
+
+**Avantage** : Fonctionne partout dans le monde, pas besoin de WiFi local
+
+### Version locale
+
+1. Démarrez le serveur sur un ordinateur local (`npm start`)
+2. Tous les participants doivent être sur le même réseau WiFi
+3. Affichez le QR code depuis http://localhost:3001/qrcode
+4. Consultez l'administration depuis http://localhost:3001/admin
 
 ## Ajout de questions
 
@@ -90,11 +114,22 @@ Connectez-vous à l'interface d'administration pour :
 
 ## Technologies utilisées
 
-- Node.js + Express
-- SQLite3
+**Backend**
+- Node.js + Express (MVC)
+- PostgreSQL (Neon - production)
+- SQLite3 (développement local)
 - EJS (Templates)
+- Express Session
+
+**Frontend**
 - Vanilla JavaScript
-- CSS3
+- CSS3 (Design Tron avec effets néon)
+- Google Fonts (Orbitron, Rajdhani)
+
+**Déploiement**
+- Vercel (Hébergement serverless)
+- Neon (Base de données PostgreSQL managée)
+- GitHub (Contrôle de version)
 
 ## License
 
