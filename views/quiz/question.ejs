@@ -100,10 +100,18 @@
           body: JSON.stringify({ answer })
         });
 
+        if (!response.ok) {
+          throw new Error('Erreur serveur');
+        }
+
         const data = await response.json();
 
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
         // Afficher le feedback
-        showFeedback(data.correct, data.correctAnswer);
+        showFeedback(data.correct, data.correctAnswer, answer);
 
         // Passer à la question suivante après 2 secondes
         setTimeout(() => {
@@ -120,7 +128,7 @@
       }
     }
 
-    function showFeedback(correct, correctAnswer) {
+    function showFeedback(correct, correctAnswer, userAnswer) {
       const feedback = document.getElementById('feedback');
       const icon = document.getElementById('feedback-icon');
       const text = document.getElementById('feedback-text');
@@ -141,7 +149,7 @@
       answerButtons.forEach(btn => {
         if (btn.dataset.answer === correctAnswer) {
           btn.classList.add('correct');
-        } else if (btn.dataset.answer === answer && !correct) {
+        } else if (btn.dataset.answer === userAnswer && !correct) {
           btn.classList.add('wrong');
         }
       });
