@@ -124,6 +124,18 @@ exports.showResults = async (req, res) => {
     // Calculer la position dans le classement
     const position = leaderboard.findIndex(entry => entry.score <= score) + 1;
 
+    // Générer QR code pour DJ Prestige Sound
+    const QRCode = require('qrcode');
+    const djWebsiteUrl = 'https://djprestigesound.be';
+    const djQRCode = await QRCode.toDataURL(djWebsiteUrl, {
+      errorCorrectionLevel: 'H',
+      width: 250,
+      color: {
+        dark: '#FF006E',  // Rose néon pour DJ Prestige Sound
+        light: '#0A0E27'
+      }
+    });
+
     res.render('quiz/results', {
       session,
       score,
@@ -131,7 +143,9 @@ exports.showResults = async (req, res) => {
       totalQuestions,
       percentage: totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0,
       leaderboard,
-      position: position || leaderboard.length + 1
+      position: position || leaderboard.length + 1,
+      djQRCode,
+      djWebsiteUrl
     });
 
     // Nettoyer la session

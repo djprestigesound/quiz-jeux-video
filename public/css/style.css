@@ -2183,3 +2183,136 @@ td code {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* DJ Prestige Sound CTA Section */
+.dj-cta-section {
+  margin: 40px 0 30px 0;
+  padding: 0 20px;
+}
+
+.dj-cta-card {
+  background: linear-gradient(135deg, rgba(255, 0, 110, 0.1), rgba(0, 240, 255, 0.05));
+  border: 2px solid var(--neon-pink);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 0 40px rgba(255, 0, 110, 0.3);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.dj-cta-card:hover {
+  box-shadow: 0 0 60px rgba(255, 0, 110, 0.5);
+  transform: translateY(-5px);
+}
+
+.dj-cta-content {
+  text-align: left;
+}
+
+.dj-cta-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.dj-cta-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  color: var(--neon-pink);
+  text-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.dj-cta-text {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.dj-cta-subtitle {
+  font-size: 1rem;
+  color: var(--neon-cyan);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.dj-qr-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.dj-qr-code {
+  background: white;
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 0 30px rgba(255, 0, 110, 0.4);
+  transition: all 0.3s ease;
+}
+
+.dj-qr-code:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 50px rgba(255, 0, 110, 0.6);
+}
+
+.dj-qr-code img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+}
+
+.dj-qr-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.dj-website-link {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  color: var(--neon-pink);
+  text-decoration: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(255, 0, 110, 0.4);
+}
+
+.dj-website-link:hover {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .dj-cta-card {
+    grid-template-columns: 1fr;
+    padding: 30px 20px;
+    gap: 30px;
+  }
+
+  .dj-cta-content {
+    text-align: center;
+  }
+
+  .dj-cta-title {
+    font-size: 1.4rem;
+  }
+
+  .dj-cta-text {
+    font-size: 1rem;
+  }
+
+  .dj-qr-code img {
+    width: 180px;
+    height: 180px;
+  }
+}
