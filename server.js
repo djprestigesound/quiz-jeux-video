@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const express = require('express');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 const config = require('./config/config');
@@ -17,12 +17,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuration de session
-app.use(session({
-  secret: config.sessionSecret,
-  resave: false,
-  saveUninitialized: false,
-  cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 heures
+// Configuration de session (cookie-based pour serverless)
+app.use(cookieSession({
+  name: 'quiz-session',
+  keys: [config.sessionSecret, 'quiz-jeux-video-backup-key'],
+  maxAge: 24 * 60 * 60 * 1000 // 24 heures
 }));
 
 // Routes
