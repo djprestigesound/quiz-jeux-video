@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="welcome-screen">
+      <div class="game-header">
+        <h1>🎮 Quiz Jeux Vidéo</h1>
+        <p class="subtitle">Testez vos connaissances gaming !</p>
+      </div>
+
+      <div class="start-form">
+        <form action="/quiz/start" method="POST">
+          <div class="form-group">
+            <label for="playerName">Votre pseudo :</label>
+            <input
+              type="text"
+              id="playerName"
+              name="playerName"
+              placeholder="Entrez votre pseudo"
+              maxlength="20"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large">
+            Commencer le Quiz
+          </button>
+        </form>
+      </div>
+
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">❓</div>
+          <div class="info-text">
+            <strong>10 Questions</strong>
+            <span>Sur les jeux vidéo cultes</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">⏱️</div>
+          <div class="info-text">
+            <strong>30 secondes</strong>
+            <span>Par question</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🏆</div>
+          <div class="info-text">
+            <strong>Classement</strong>
+            <span>Battez les autres joueurs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="/quiz/leaderboard" class="link">Voir le classement</a>
+        <span style="color: var(--text-secondary); margin: 0 15px;">•</span>
+        <a href="/qrcode" class="link">📱 Générer un QR Code</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

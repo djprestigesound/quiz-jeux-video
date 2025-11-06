@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questions - Admin Quiz</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <%- include('partials/nav') %>
+
+    <div class="admin-content">
+      <div class="page-header">
+        <h1>❓ Questions</h1>
+        <a href="/admin/questions/add" class="btn btn-primary">+ Ajouter une question</a>
+      </div>
+
+      <div class="questions-list">
+        <% questions.forEach(q => { %>
+          <div class="question-card">
+            <div class="question-header">
+              <div class="question-meta">
+                <span class="question-id">#<%= q.id %></span>
+                <span class="question-category"><%= q.category %></span>
+              </div>
+              <div class="question-actions">
+                <a href="/admin/questions/edit/<%= q.id %>" class="btn-icon" title="Modifier">✏️</a>
+                <form action="/admin/questions/delete/<%= q.id %>" method="POST" style="display: inline;" onsubmit="return confirm('Supprimer cette question ?')">
+                  <button type="submit" class="btn-icon" title="Supprimer">🗑️</button>
+                </form>
+              </div>
+            </div>
+
+            <div class="question-text-display">
+              <%= q.question %>
+            </div>
+
+            <div class="answers-preview">
+              <div class="answer-preview <%= q.correct_answer === 'A' ? 'correct' : '' %>">
+                <strong>A:</strong> <%= q.option_a %>
+              </div>
+              <div class="answer-preview <%= q.correct_answer === 'B' ? 'correct' : '' %>">
+                <strong>B:</strong> <%= q.option_b %>
+              </div>
+              <div class="answer-preview <%= q.correct_answer === 'C' ? 'correct' : '' %>">
+                <strong>C:</strong> <%= q.option_c %>
+              </div>
+              <div class="answer-preview <%= q.correct_answer === 'D' ? 'correct' : '' %>">
+                <strong>D:</strong> <%= q.option_d %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+
+      <% if (questions.length === 0) { %>
+        <div class="empty-state">
+          <p>Aucune question pour le moment.</p>
+          <a href="/admin/questions/add" class="btn btn-primary">Ajouter la première question</a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

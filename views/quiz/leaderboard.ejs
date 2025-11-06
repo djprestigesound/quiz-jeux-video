@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classement - Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="leaderboard-screen">
+      <div class="page-header">
+        <h1>🏆 Classement</h1>
+        <p>Les meilleurs joueurs</p>
+      </div>
+
+      <div class="leaderboard-full">
+        <% if (leaderboard.length === 0) { %>
+          <div class="empty-state">
+            <p>Aucun joueur pour le moment.</p>
+            <p>Soyez le premier à jouer !</p>
+          </div>
+        <% } else { %>
+          <% leaderboard.forEach((entry, index) => { %>
+            <div class="leaderboard-item-large">
+              <div class="rank-badge rank-<%= index + 1 %>">
+                <% if (index === 0) { %>
+                  🥇
+                <% } else if (index === 1) { %>
+                  🥈
+                <% } else if (index === 2) { %>
+                  🥉
+                <% } else { %>
+                  #<%= index + 1 %>
+                <% } %>
+              </div>
+
+              <div class="player-info">
+                <div class="player-name"><%= entry.player_name %></div>
+                <div class="player-stats">
+                  <%= entry.correct_answers %> / <%= entry.total_questions %> bonnes réponses
+                </div>
+              </div>
+
+              <div class="player-score-large">
+                <%= entry.score %>
+              </div>
+            </div>
+          <% }); %>
+        <% } %>
+      </div>
+
+      <div class="page-actions">
+        <a href="/" class="btn btn-primary">Jouer</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

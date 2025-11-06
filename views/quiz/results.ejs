@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résultats - Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="results-screen">
+      <div class="results-header">
+        <h1>🎮 Quiz Terminé !</h1>
+      </div>
+
+      <div class="results-card">
+        <div class="score-big">
+          <div class="score-label">Votre Score</div>
+          <div class="score-value"><%= score %></div>
+          <div class="score-subtitle"><%= correctAnswers %> / <%= totalQuestions %> bonnes réponses</div>
+        </div>
+
+        <div class="percentage-circle">
+          <svg width="150" height="150">
+            <circle cx="75" cy="75" r="65" class="circle-bg"></circle>
+            <circle
+              cx="75" cy="75" r="65"
+              class="circle-progress"
+              style="stroke-dashoffset: <%= 408 - (408 * percentage / 100) %>"
+            ></circle>
+          </svg>
+          <div class="percentage-text"><%= percentage %>%</div>
+        </div>
+
+        <div class="performance-message">
+          <% if (percentage >= 90) { %>
+            <div class="message message-excellent">
+              🌟 Excellent ! Vous êtes un vrai gamer !
+            </div>
+          <% } else if (percentage >= 70) { %>
+            <div class="message message-good">
+              👍 Très bien ! Belle performance !
+            </div>
+          <% } else if (percentage >= 50) { %>
+            <div class="message message-average">
+              👌 Pas mal ! Vous pouvez faire mieux !
+            </div>
+          <% } else { %>
+            <div class="message message-poor">
+              💪 Continuez à vous entraîner !
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="leaderboard-preview">
+        <h3>🏆 Top 10</h3>
+        <div class="leaderboard-list">
+          <% leaderboard.forEach((entry, index) => { %>
+            <div class="leaderboard-item <%= entry.score === score && entry.player_name === session.player_name ? 'highlight' : '' %>">
+              <span class="rank">
+                <% if (index === 0) { %>
+                  🥇
+                <% } else if (index === 1) { %>
+                  🥈
+                <% } else if (index === 2) { %>
+                  🥉
+                <% } else { %>
+                  <%= index + 1 %>
+                <% } %>
+              </span>
+              <span class="player-name"><%= entry.player_name %></span>
+              <span class="player-score"><%= entry.score %></span>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <div class="results-actions">
+        <a href="/" class="btn btn-primary">Rejouer</a>
+        <a href="/quiz/leaderboard" class="btn btn-secondary">Voir le classement complet</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

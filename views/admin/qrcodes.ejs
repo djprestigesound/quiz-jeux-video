@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Codes - Admin Quiz</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <%- include('partials/nav') %>
+
+    <div class="admin-content">
+      <div class="page-header">
+        <h1>📱 QR Codes</h1>
+        <p>Codes QR pour accéder au quiz</p>
+      </div>
+
+      <div class="qrcode-section">
+        <div class="qrcode-card">
+          <h3>QR Code principal</h3>
+          <p>Scannez ce code pour accéder au quiz</p>
+
+          <div class="qrcode-display">
+            <img src="<%= qrCodeUrl %>" alt="QR Code Quiz" class="qrcode-image">
+          </div>
+
+          <div class="qrcode-info">
+            <strong>URL d'accès :</strong>
+            <div class="url-display">
+              <code><%= baseUrl %></code>
+              <button class="btn-copy" onclick="copyUrl()">📋 Copier</button>
+            </div>
+          </div>
+
+          <div class="qrcode-actions">
+            <button class="btn btn-primary" onclick="printQRCode()">🖨️ Imprimer</button>
+            <a href="<%= qrCodeUrl %>" download="quiz-qrcode.png" class="btn btn-secondary">💾 Télécharger</a>
+          </div>
+        </div>
+
+        <div class="qrcode-instructions">
+          <h3>📖 Instructions</h3>
+          <ol>
+            <li>Imprimez ou affichez le QR code à l'écran</li>
+            <li>Les participants scannent le code avec leur smartphone</li>
+            <li>Ils sont redirigés vers la page d'accueil du quiz</li>
+            <li>Ils entrent leur pseudo et commencent à jouer</li>
+          </ol>
+
+          <div class="tip">
+            💡 <strong>Astuce :</strong> Vous pouvez aussi partager l'URL directement si les participants sont déjà connectés au même réseau local.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function copyUrl() {
+      const url = '<%= baseUrl %>';
+      navigator.clipboard.writeText(url).then(() => {
+        alert('URL copiée dans le presse-papiers !');
+      });
+    }
+
+    function printQRCode() {
+      window.print();
+    }
+  </script>
+
+  <style>
+    @media print {
+      .admin-nav, .page-header p, .qrcode-actions, .qrcode-instructions {
+        display: none !important;
+      }
+
+      .qrcode-card {
+        text-align: center;
+        page-break-inside: avoid;
+      }
+
+      .qrcode-image {
+        max-width: 400px;
+      }
+    }
+  </style>
+</body>
+</html>

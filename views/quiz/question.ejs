@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Question <%= questionNumber %> - Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="quiz-screen">
+      <div class="quiz-header">
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: <%= (questionNumber / totalQuestions) * 100 %>%"></div>
+        </div>
+        <div class="quiz-info">
+          <span class="question-counter">Question <%= questionNumber %> / <%= totalQuestions %></span>
+          <span class="score-display">Score: <strong><%= score %></strong></span>
+        </div>
+        <% if (timePerQuestion > 0) { %>
+          <div class="timer" id="timer">⏱️ <span id="time-left"><%= timePerQuestion %></span>s</div>
+        <% } %>
+      </div>
+
+      <div class="question-container">
+        <h2 class="question-text"><%= question.question %></h2>
+
+        <div class="answers-grid" id="answers">
+          <button class="answer-btn" data-answer="A">
+            <span class="answer-letter">A</span>
+            <span class="answer-text"><%= question.option_a %></span>
+          </button>
+
+          <button class="answer-btn" data-answer="B">
+            <span class="answer-letter">B</span>
+            <span class="answer-text"><%= question.option_b %></span>
+          </button>
+
+          <button class="answer-btn" data-answer="C">
+            <span class="answer-letter">C</span>
+            <span class="answer-text"><%= question.option_c %></span>
+          </button>
+
+          <button class="answer-btn" data-answer="D">
+            <span class="answer-letter">D</span>
+            <span class="answer-text"><%= question.option_d %></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback" style="display: none;">
+        <div class="feedback-content">
+          <div class="feedback-icon" id="feedback-icon"></div>
+          <div class="feedback-text" id="feedback-text"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const timePerQuestion = <%= timePerQuestion %>;
+    let timeLeft = timePerQuestion;
+    let timerInterval;
+
+    // Timer
+    if (timePerQuestion > 0) {
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('time-left').textContent = timeLeft;
+
+        if (timeLeft <= 10) {
+          document.getElementById('timer').classList.add('timer-warning');
+        }
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          submitAnswer(null); // Auto-submit si temps écoulé
+        }
+      }, 1000);
+    }
+
+    // Gestion des réponses
+    const answerButtons = document.querySelectorAll('.answer-btn');
+    answerButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const answer = btn.dataset.answer;
+        submitAnswer(answer);
+      });
+    });
+
+    async function submitAnswer(answer) {
+      // Désactiver tous les boutons
+      answerButtons.forEach(btn => btn.disabled = true);
+      clearInterval(timerInterval);
+
+      try {
+        const response = await fetch('/quiz/answer', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answer })
+        });
+
+        const data = await response.json();
+
+        // Afficher le feedback
+        showFeedback(data.correct, data.correctAnswer);
+
+        // Passer à la question suivante après 2 secondes
+        setTimeout(() => {
+          if (data.nextQuestion) {
+            window.location.href = '/quiz/question';
+          } else {
+            window.location.href = '/quiz/results';
+          }
+        }, 2000);
+
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors de la soumission de la réponse');
+      }
+    }
+
+    function showFeedback(correct, correctAnswer) {
+      const feedback = document.getElementById('feedback');
+      const icon = document.getElementById('feedback-icon');
+      const text = document.getElementById('feedback-text');
+
+      if (correct) {
+        icon.textContent = '✅';
+        text.textContent = 'Bonne réponse !';
+        feedback.className = 'feedback feedback-correct';
+      } else {
+        icon.textContent = '❌';
+        text.textContent = `Mauvaise réponse. La bonne réponse était : ${correctAnswer}`;
+        feedback.className = 'feedback feedback-wrong';
+      }
+
+      feedback.style.display = 'flex';
+
+      // Colorer les boutons
+      answerButtons.forEach(btn => {
+        if (btn.dataset.answer === correctAnswer) {
+          btn.classList.add('correct');
+        } else if (btn.dataset.answer === answer && !correct) {
+          btn.classList.add('wrong');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

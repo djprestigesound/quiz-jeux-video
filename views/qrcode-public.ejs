@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code - Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .qrcode-page {
+      background: var(--bg-card);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      padding: 50px;
+      box-shadow: var(--glow-cyan), inset 0 0 50px rgba(0, 240, 255, 0.1);
+      width: 100%;
+      max-width: 900px;
+      backdrop-filter: blur(10px);
+      animation: slideUp 0.8s ease;
+      text-align: center;
+    }
+
+    .qrcode-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3em;
+      color: var(--neon-cyan);
+      text-shadow: var(--glow-cyan);
+      margin-bottom: 30px;
+      letter-spacing: 3px;
+    }
+
+    .qrcode-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.3em;
+      margin-bottom: 40px;
+    }
+
+    .qrcode-container {
+      background: rgba(0, 240, 255, 0.05);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 15px;
+      padding: 40px;
+      margin-bottom: 40px;
+      box-shadow: inset 0 0 40px rgba(0, 240, 255, 0.1);
+    }
+
+    .qrcode-main {
+      background: white;
+      border: 4px solid var(--neon-cyan);
+      border-radius: 15px;
+      padding: 20px;
+      display: inline-block;
+      box-shadow: var(--glow-cyan);
+      margin-bottom: 30px;
+    }
+
+    .qrcode-main img {
+      display: block;
+      max-width: 400px;
+      width: 100%;
+      height: auto;
+    }
+
+    .url-box {
+      background: rgba(0, 240, 255, 0.1);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .url-label {
+      color: var(--neon-cyan);
+      font-size: 1.1em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .url-value {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.5em;
+      color: var(--text-white);
+      word-break: break-all;
+    }
+
+    .instructions {
+      background: rgba(255, 107, 0, 0.1);
+      border: 2px solid var(--neon-orange);
+      border-left: 5px solid var(--neon-orange);
+      border-radius: 10px;
+      padding: 30px;
+      margin-bottom: 30px;
+      text-align: left;
+      box-shadow: 0 0 20px rgba(255, 107, 0, 0.2);
+    }
+
+    .instructions h3 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--neon-orange);
+      margin-bottom: 20px;
+      font-size: 1.5em;
+      text-align: center;
+    }
+
+    .instructions ol {
+      margin-left: 20px;
+      color: var(--text-secondary);
+      font-size: 1.1em;
+      line-height: 1.8;
+    }
+
+    .instructions li {
+      margin-bottom: 15px;
+    }
+
+    .instructions strong {
+      color: var(--neon-orange);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    @media print {
+      body::after,
+      body::before {
+        display: none !important;
+      }
+
+      .action-buttons,
+      .instructions {
+        display: none !important;
+      }
+
+      .qrcode-page {
+        border: none;
+        box-shadow: none;
+        padding: 20px;
+      }
+
+      .qrcode-main {
+        border: 3px solid black;
+      }
+
+      .qrcode-main img {
+        max-width: 600px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="qrcode-page">
+      <h1 class="qrcode-title">📱 QR CODE</h1>
+      <p class="qrcode-subtitle">Scannez pour accéder au quiz</p>
+
+      <div class="qrcode-container">
+        <div class="qrcode-main">
+          <img src="<%= qrCodeDataURL %>" alt="QR Code Quiz">
+        </div>
+
+        <div class="url-box">
+          <div class="url-label">🌐 URL d'accès</div>
+          <div class="url-value"><%= baseUrl %></div>
+        </div>
+      </div>
+
+      <div class="instructions">
+        <h3>📖 Mode d'emploi</h3>
+        <ol>
+          <li><strong>Scanner le QR code</strong> avec l'appareil photo du smartphone</li>
+          <li><strong>Ouvrir le lien</strong> qui s'affiche automatiquement</li>
+          <li><strong>Entrer un pseudo</strong> pour commencer à jouer</li>
+          <li><strong>Répondre aux questions</strong> et tenter de battre les autres joueurs !</li>
+        </ol>
+      </div>
+
+      <div class="action-buttons">
+        <button onclick="window.print()" class="btn btn-primary">
+          🖨️ Imprimer le QR Code
+        </button>
+
+        <button onclick="downloadQR()" class="btn btn-secondary">
+          💾 Télécharger l'image
+        </button>
+
+        <a href="/" class="btn btn-secondary">
+          ← Retour à l'accueil
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function downloadQR() {
+      const link = document.createElement('a');
+      link.download = 'quiz-qrcode.png';
+      link.href = '<%= qrCodePrintURL %>';
+      link.click();
+    }
+
+    function copyURL() {
+      const url = '<%= baseUrl %>';
+      navigator.clipboard.writeText(url).then(() => {
+        alert('✅ URL copiée dans le presse-papiers !');
+      }).catch(() => {
+        alert('❌ Impossible de copier l\'URL');
+      });
+    }
+  </script>
+</body>
+</html>
