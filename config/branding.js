@@ -7,7 +7,7 @@ module.exports = {
   partnerName: 'DJ Prestige Sound',
 
   // Slogan ou tagline
-  tagline: 'Un événement VERDON x DJ Prestige Sound',
+  tagline: 'Un événement VERDON & DJ Prestige Sound',
 
   // Chemins des logos
   logos: {
