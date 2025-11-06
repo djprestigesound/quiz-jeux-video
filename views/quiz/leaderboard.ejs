@@ -52,8 +52,48 @@
 
       <div class="page-actions">
         <a href="/" class="btn btn-primary">Jouer</a>
+        <a href="/leaderboard/display" class="btn btn-secondary">📺 Mode Écran Géant</a>
+      </div>
+
+      <div class="auto-refresh-indicator">
+        <span class="refresh-dot"></span>
+        <span>Mise à jour automatique</span>
       </div>
     </div>
   </div>
+
+  <script>
+    // Auto-refresh toutes les 5 secondes
+    let refreshTimer;
+    let lastUpdateTime = Date.now();
+
+    function startAutoRefresh() {
+      refreshTimer = setInterval(() => {
+        // Reload la page pour mettre à jour le classement
+        window.location.reload();
+      }, 5000); // 5 secondes
+    }
+
+    // Animation du point de refresh
+    setInterval(() => {
+      const dot = document.querySelector('.refresh-dot');
+      if (dot) {
+        dot.style.animation = 'none';
+        setTimeout(() => {
+          dot.style.animation = 'pulse 1s ease-in-out';
+        }, 10);
+      }
+    }, 5000);
+
+    // Démarrer l'auto-refresh
+    startAutoRefresh();
+
+    // Nettoyer l'intervalle quand on quitte la page
+    window.addEventListener('beforeunload', () => {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+      }
+    });
+  </script>
 </body>
 </html>

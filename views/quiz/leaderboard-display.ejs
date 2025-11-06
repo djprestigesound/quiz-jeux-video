@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏆 Classement en Direct - Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="display-mode">
+  <div class="display-header">
+    <h1>🏆 Classement en Direct</h1>
+    <p class="display-subtitle">Quiz Jeux Vidéo - Événement VERDON</p>
+  </div>
+
+  <div class="display-leaderboard">
+    <% if (leaderboard.length === 0) { %>
+      <div class="empty-state" style="text-align: center; padding: 100px 0; font-size: 2rem; color: var(--text-secondary);">
+        <p style="font-size: 5rem; margin-bottom: 20px;">🎮</p>
+        <p>Aucun joueur pour le moment</p>
+        <p style="font-size: 1.5rem; margin-top: 20px;">En attente des participants...</p>
+      </div>
+    <% } else { %>
+      <% leaderboard.forEach((entry, index) => { %>
+        <div class="display-item rank-<%= index + 1 %>">
+          <div class="display-rank rank-<%= index + 1 %>">
+            <% if (index === 0) { %>
+              🥇
+            <% } else if (index === 1) { %>
+              🥈
+            <% } else if (index === 2) { %>
+              🥉
+            <% } else { %>
+              #<%= index + 1 %>
+            <% } %>
+          </div>
+
+          <div class="display-player">
+            <div class="display-player-name"><%= entry.player_name %></div>
+            <div class="display-player-stats">
+              <%= entry.correct_answers %> / <%= entry.total_questions %> bonnes réponses
+            </div>
+          </div>
+
+          <div class="display-score">
+            <%= entry.score %>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+
+  <div class="display-footer">
+    <div class="display-refresh">
+      <span class="refresh-dot"></span>
+      <span>Mise à jour automatique toutes les 3 secondes</span>
+    </div>
+  </div>
+
+  <script>
+    // Auto-refresh plus rapide pour l'écran géant (3 secondes)
+    let refreshTimer;
+
+    function startAutoRefresh() {
+      refreshTimer = setInterval(() => {
+        window.location.reload();
+      }, 3000); // 3 secondes pour le mode display
+    }
+
+    // Animation du point de refresh
+    setInterval(() => {
+      const dot = document.querySelector('.refresh-dot');
+      if (dot) {
+        dot.style.animation = 'none';
+        setTimeout(() => {
+          dot.style.animation = 'pulse 1s ease-in-out';
+        }, 10);
+      }
+    }, 3000);
+
+    // Démarrer l'auto-refresh
+    startAutoRefresh();
+
+    // Nettoyer l'intervalle
+    window.addEventListener('beforeunload', () => {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+      }
+    });
+
+    // Empêcher le scroll accidentel
+    document.body.style.overflow = 'hidden';
+
+    // Désactiver le zoom sur double-tap (pour écran tactile)
+    document.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+    });
+  </script>
+</body>
+</html>

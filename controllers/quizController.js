@@ -151,3 +151,14 @@ exports.leaderboard = async (req, res) => {
     res.status(500).send('Erreur lors de l\'affichage du classement');
   }
 };
+
+// Mode écran géant pour projeter le classement
+exports.leaderboardDisplay = async (req, res) => {
+  try {
+    const leaderboard = await QuizSession.getLeaderboard(10); // Top 10 pour l'écran
+    res.render('quiz/leaderboard-display', { leaderboard });
+  } catch (error) {
+    console.error('Erreur lors de l\'affichage du classement géant:', error);
+    res.status(500).send('Erreur lors de l\'affichage du classement');
+  }
+};

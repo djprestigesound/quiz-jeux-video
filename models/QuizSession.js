@@ -94,11 +94,23 @@ class QuizSession {
       `SELECT
          COUNT(*) as total_sessions,
          COUNT(CASE WHEN completed_at IS NOT NULL THEN 1 END) as completed_sessions,
+         COUNT(CASE WHEN completed_at IS NULL THEN 1 END) as active_sessions,
          AVG(score) as avg_score,
          MAX(score) as max_score
        FROM quiz_sessions`
     );
     return stats;
+  }
+
+  // Nombre de joueurs actifs (sessions en cours)
+  static async getActiveSessions() {
+    await db.connect();
+    const result = await db.get(
+      `SELECT COUNT(*) as active_count
+       FROM quiz_sessions
+       WHERE completed_at IS NULL`
+    );
+    return result.active_count || 0;
   }
 }
 

@@ -15,7 +15,26 @@
         <h1>📊 Dashboard</h1>
       </div>
 
+      <div class="event-banner">
+        <div class="event-live">
+          <span class="live-dot"></span>
+          <span>ÉVÉNEMENT EN DIRECT</span>
+        </div>
+        <div class="auto-refresh-indicator">
+          <span class="refresh-dot"></span>
+          <span>Actualisation automatique (10s)</span>
+        </div>
+      </div>
+
       <div class="stats-grid">
+        <div class="stat-card stat-highlight">
+          <div class="stat-icon">🎮</div>
+          <div class="stat-info">
+            <div class="stat-value"><%= stats.active_sessions || 0 %></div>
+            <div class="stat-label">Joueurs actifs EN CE MOMENT</div>
+          </div>
+        </div>
+
         <div class="stat-card">
           <div class="stat-icon">👥</div>
           <div class="stat-info">
@@ -36,7 +55,7 @@
           <div class="stat-icon">❓</div>
           <div class="stat-info">
             <div class="stat-value"><%= questionCount %></div>
-            <div class="stat-label">Questions</div>
+            <div class="stat-label">Questions disponibles</div>
           </div>
         </div>
 
@@ -45,6 +64,14 @@
           <div class="stat-info">
             <div class="stat-value"><%= stats.avg_score ? Math.round(stats.avg_score) : 0 %></div>
             <div class="stat-label">Score moyen</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-info">
+            <div class="stat-value"><%= stats.max_score || 0 %></div>
+            <div class="stat-label">Meilleur score</div>
           </div>
         </div>
       </div>
@@ -95,5 +122,45 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Auto-refresh du dashboard toutes les 10 secondes
+    let refreshTimer;
+
+    function startAutoRefresh() {
+      refreshTimer = setInterval(() => {
+        window.location.reload();
+      }, 10000); // 10 secondes
+    }
+
+    // Animation du point de refresh
+    setInterval(() => {
+      const dot = document.querySelector('.refresh-dot');
+      if (dot) {
+        dot.style.animation = 'none';
+        setTimeout(() => {
+          dot.style.animation = 'pulse 1s ease-in-out';
+        }, 10);
+      }
+    }, 10000);
+
+    // Animation du point LIVE
+    const liveDot = document.querySelector('.live-dot');
+    if (liveDot) {
+      setInterval(() => {
+        liveDot.style.opacity = liveDot.style.opacity === '0.3' ? '1' : '0.3';
+      }, 800);
+    }
+
+    // Démarrer l'auto-refresh
+    startAutoRefresh();
+
+    // Nettoyer l'intervalle
+    window.addEventListener('beforeunload', () => {
+      if (refreshTimer) {
+        clearInterval(refreshTimer);
+      }
+    });
+  </script>
 </body>
 </html>

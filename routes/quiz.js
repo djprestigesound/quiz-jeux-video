@@ -11,6 +11,8 @@ router.post('/start', quizController.start);
 router.get('/question', quizController.showQuestion);
 router.post('/answer', quizController.submitAnswer);
 router.get('/results', quizController.showResults);
+// Route spécifique AVANT la route générale
+router.get('/leaderboard/display', quizController.leaderboardDisplay);
 router.get('/leaderboard', quizController.leaderboard);
 
 module.exports = router;
