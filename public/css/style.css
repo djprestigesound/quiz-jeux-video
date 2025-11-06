@@ -2316,3 +2316,268 @@ td code {
     height: 180px;
   }
 }
+
+/* ===================================
+   SCHEDULE SECTION - Programme de la journée
+   =================================== */
+
+.schedule-section {
+  margin: 60px 0;
+  padding: 50px 0;
+  border-top: 2px solid rgba(0, 240, 255, 0.3);
+  border-bottom: 2px solid rgba(0, 240, 255, 0.3);
+}
+
+.schedule-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  color: var(--neon-cyan);
+  text-align: center;
+  text-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+  margin-bottom: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.schedule-subtitle {
+  font-size: 1.3rem;
+  color: var(--neon-pink);
+  text-align: center;
+  text-shadow: 0 0 15px rgba(255, 0, 110, 0.6);
+  margin-bottom: 40px;
+  font-weight: 600;
+}
+
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.schedule-item {
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(255, 0, 110, 0.05));
+  border: 2px solid var(--neon-cyan);
+  border-radius: 15px;
+  padding: 25px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent, rgba(0, 240, 255, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.schedule-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.5);
+  border-color: var(--neon-pink);
+}
+
+.schedule-item:hover::before {
+  opacity: 1;
+}
+
+.schedule-time {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  color: var(--neon-pink);
+  font-weight: 900;
+  text-align: center;
+  text-shadow: 0 0 20px rgba(255, 0, 110, 0.6);
+  margin-bottom: 20px;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, var(--neon-pink), var(--neon-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.schedule-details {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.schedule-icon {
+  font-size: 3rem;
+  flex-shrink: 0;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.schedule-info {
+  flex: 1;
+}
+
+.schedule-info strong {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.3rem;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.schedule-info span {
+  display: block;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.schedule-finale {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.15), rgba(255, 0, 110, 0.15));
+  border: 3px solid var(--neon-orange);
+  border-radius: 20px;
+  padding: 35px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(255, 107, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.schedule-finale::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 107, 0, 0.1) 0%, transparent 70%);
+  animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.schedule-finale:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 60px rgba(255, 107, 0, 0.6);
+}
+
+.finale-icon {
+  font-size: 4rem;
+  animation: pulse 2s ease-in-out infinite;
+  z-index: 1;
+  position: relative;
+}
+
+.finale-text {
+  text-align: left;
+  z-index: 1;
+  position: relative;
+}
+
+.finale-text strong {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  color: var(--neon-orange);
+  text-shadow: 0 0 25px rgba(255, 107, 0, 0.8);
+  margin-bottom: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.finale-text span {
+  display: block;
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Responsive pour la section planning */
+@media (max-width: 768px) {
+  .schedule-title {
+    font-size: 2rem;
+  }
+
+  .schedule-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+
+  .schedule-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .schedule-item {
+    padding: 20px;
+  }
+
+  .schedule-time {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+  }
+
+  .schedule-details {
+    gap: 12px;
+  }
+
+  .schedule-icon {
+    font-size: 2.5rem;
+  }
+
+  .schedule-info strong {
+    font-size: 1.1rem;
+  }
+
+  .schedule-info span {
+    font-size: 0.9rem;
+  }
+
+  .schedule-finale {
+    flex-direction: column;
+    padding: 25px 20px;
+    gap: 15px;
+  }
+
+  .finale-icon {
+    font-size: 3rem;
+  }
+
+  .finale-text {
+    text-align: center;
+  }
+
+  .finale-text strong {
+    font-size: 1.4rem;
+  }
+
+  .finale-text span {
+    font-size: 1rem;
+  }
+}
