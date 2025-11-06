@@ -1708,23 +1708,59 @@ td code {
   }
 }
 
-/* Branding VERDON */
+/* Branding VERDON x DJ Prestige Sound */
 .brand-logo-header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   padding: 20px 0;
 }
 
+.dual-branding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 15px;
+}
+
 .company-logo {
-  max-width: 300px;
+  max-width: 250px;
   height: auto;
   filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
   transition: all 0.3s ease;
 }
 
+.partner-logo {
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.3));
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
 .company-logo:hover {
   filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.5));
   transform: scale(1.05);
+}
+
+.partner-logo:hover {
+  filter: drop-shadow(0 0 30px rgba(255, 0, 110, 0.5));
+  transform: scale(1.05);
+}
+
+.collab-separator {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.6);
+  font-family: 'Orbitron', sans-serif;
+}
+
+.event-tagline {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  letter-spacing: 1px;
 }
 
 .brand-footer {
@@ -1749,10 +1785,25 @@ td code {
   z-index: 100;
 }
 
+.quiz-dual-branding {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .quiz-brand-logo {
-  max-width: 150px;
+  max-width: 120px;
   height: auto;
   opacity: 0.9;
+  border-radius: 8px;
+}
+
+.quiz-brand-logo:first-child {
+  filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.3));
+}
+
+.quiz-brand-logo:last-child {
+  filter: drop-shadow(0 0 10px rgba(255, 0, 110, 0.3));
 }
 
 .results-brand {
@@ -1760,28 +1811,88 @@ td code {
   margin-top: 30px;
 }
 
-.results-brand img {
-  max-width: 250px;
+.results-dual-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.results-dual-logos img {
+  max-width: 200px;
   height: auto;
   opacity: 0.8;
+  border-radius: 8px;
+}
+
+.logo-separator {
+  font-size: 2rem;
+  color: var(--neon-cyan);
+  font-weight: 700;
+  font-family: 'Orbitron', sans-serif;
 }
 
 @media (max-width: 768px) {
-  .company-logo {
-    max-width: 200px;
+  .dual-branding {
+    flex-direction: column;
+    gap: 15px;
   }
-  
+
+  .company-logo, .partner-logo {
+    max-width: 180px;
+  }
+
+  .collab-separator {
+    font-size: 2rem;
+  }
+
+  .event-tagline {
+    font-size: 0.9rem;
+  }
+
   .quiz-brand-header {
     top: 10px;
     right: 10px;
   }
-  
-  .quiz-brand-logo {
-    max-width: 100px;
+
+  .quiz-dual-branding {
+    flex-direction: column;
+    gap: 10px;
   }
-  
+
+  .quiz-brand-logo {
+    max-width: 80px;
+  }
+
+  .results-dual-logos {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .results-dual-logos img {
+    max-width: 150px;
+  }
+
+  .logo-separator {
+    font-size: 1.5rem;
+  }
+
   .footer-logo {
     height: 30px;
+  }
+
+  .display-branding {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .display-logo {
+    max-width: 200px;
+  }
+
+  .display-separator {
+    font-size: 2.5rem;
   }
 }
 
@@ -1829,6 +1940,33 @@ td code {
 .display-header {
   text-align: center;
   margin-bottom: 40px;
+}
+
+.display-branding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.display-logo {
+  max-width: 300px;
+  height: auto;
+  border-radius: 12px;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.4));
+}
+
+.display-logo:last-child {
+  filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.4));
+}
+
+.display-separator {
+  font-size: 4rem;
+  color: var(--neon-cyan);
+  font-weight: 900;
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: 0 0 30px rgba(0, 240, 255, 0.6);
 }
 
 .display-header h1 {

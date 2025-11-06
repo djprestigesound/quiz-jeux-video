@@ -3,14 +3,18 @@ module.exports = {
   // Nom de l'entreprise
   companyName: 'VERDON',
 
+  // Partenaire événement
+  partnerName: 'DJ Prestige Sound',
+
   // Slogan ou tagline
-  tagline: 'Powered by VERDON',
+  tagline: 'Un événement VERDON x DJ Prestige Sound',
 
   // Chemins des logos
   logos: {
     main: '/images/branding/logo.png',
     white: '/images/branding/logo-white.png',
-    small: '/images/branding/logo-small.png'
+    small: '/images/branding/logo-small.png',
+    partner: '/images/branding/dj_logo.jpg'
   },
 
   // Couleurs personnalisées (optionnel - surcharge les couleurs Tron)
