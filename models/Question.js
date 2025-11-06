@@ -15,8 +15,18 @@ class Question {
 
   static async getRandom(limit = 10) {
     await db.connect();
+    // Trier par difficulté pour progression : easy → medium → hard
     const questions = await db.all(
-      'SELECT * FROM questions ORDER BY RANDOM() LIMIT ?',
+      `SELECT * FROM questions
+       ORDER BY
+         CASE difficulty
+           WHEN 'easy' THEN 1
+           WHEN 'medium' THEN 2
+           WHEN 'hard' THEN 3
+           ELSE 2
+         END,
+         RANDOM()
+       LIMIT ?`,
       [limit]
     );
     return questions;

@@ -5,7 +5,7 @@ module.exports = {
 
   // Configuration du quiz
   quiz: {
-    questionsPerSession: 10, // Nombre de questions par session
+    questionsPerSession: 20, // Nombre de questions par session (augmenté à 20)
     timePerQuestion: 30, // Secondes par question (0 = pas de limite)
     pointsPerCorrectAnswer: 100,
     showCorrectAnswerAfterResponse: true
