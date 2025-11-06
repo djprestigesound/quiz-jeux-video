@@ -87,15 +87,14 @@
 
 ---
 
-### 🏆 17h15 - 17h45 | PODIUM & REMISE DES PRIX (30 min)
+### 🏆 17h15 - 17h45 | CLASSEMENT FINAL (30 min)
 - **Action :**
   - Affichage du **TOP 10 GÉNÉRAL** sur écran géant
-  - Annonce des gagnants au micro
-  - Remise de prix (si prévu par VERDON)
-  - Photos podium avec les gagnants
+  - Annonce des meilleurs scores au micro
+  - Photos avec les meilleurs joueurs (optionnel)
   - Message CTA DJ Prestige Sound
 - **Écran :** Mode podium avec effets visuels
-- **Musique :** Fanfare/victoire pour le podium
+- **Musique :** Musique d'ambiance pour la clôture
 
 ---
 
@@ -181,7 +180,7 @@ https://quiz-jeux-video.vercel.app/admin
 ### Avant la finale
 > "Attention, c'est le dernier quiz ! Le Quiz Personnages !
 > C'est votre dernière chance de grimper au classement général !
-> Le champion de la journée sera annoncé à 17h15 ! 🏆"
+> Le classement final sera affiché à 17h15 ! 🏆"
 
 ---
 
@@ -195,7 +194,7 @@ https://quiz-jeux-video.vercel.app/admin
 ### Engagement
 - 🎤 Commenter les scores en direct entre les sets
 - 📢 Créer de la compétition amicale
-- 🏆 Tease le podium final tout au long de la journée
+- 🏆 Tease le classement final tout au long de la journée
 - 📸 Encourager les photos/partages sur réseaux sociaux
 
 ### Musique DJ
@@ -230,10 +229,10 @@ https://quiz-jeux-video.vercel.app/admin
 - [ ] Commenter les scores
 - [ ] Engager l'audience
 
-### 17h15 (Podium)
+### 17h15 (Classement Final)
 - [ ] Afficher TOP 10 final
-- [ ] Annoncer les gagnants
-- [ ] Photos podium
+- [ ] Annoncer les meilleurs scores
+- [ ] Photos avec les joueurs (optionnel)
 - [ ] Afficher CTA DJ Prestige Sound
 
 ### 18h00-18h30 (Démontage)
