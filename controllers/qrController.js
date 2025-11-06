@@ -5,8 +5,8 @@ exports.showQRCode = async (req, res) => {
   try {
     // Détecter l'URL : production ou local
     const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : `http://localhost:${config.port}`;
+      ? `https://${process.env.VERCEL_URL}/play`
+      : `http://localhost:${config.port}/play`;
 
     // Générer plusieurs formats de QR codes
     const qrCodeDataURL = await QRCode.toDataURL(baseUrl, {

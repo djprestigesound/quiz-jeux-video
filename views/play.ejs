@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Commencer le Quiz - Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="welcome-screen">
+      <div class="brand-logo-header">
+        <div class="dual-branding">
+          <img src="/images/branding/logo.png" alt="VERDON" class="company-logo">
+          <span class="collab-separator">&</span>
+          <img src="/images/branding/dj_logo.jpg" alt="DJ Prestige Sound" class="partner-logo">
+        </div>
+        <p class="event-tagline">Un événement VERDON & DJ Prestige Sound</p>
+      </div>
+      <div class="game-header">
+        <h1>🎮 Commencer le Quiz</h1>
+        <p class="subtitle">C'est parti pour le quiz !</p>
+      </div>
+
+      <div class="start-form">
+        <form action="/quiz/start" method="POST" id="quizForm">
+          <div class="form-group">
+            <label for="playerName">Votre pseudo :</label>
+            <input
+              type="text"
+              id="playerName"
+              name="playerName"
+              placeholder="Entrez votre pseudo"
+              maxlength="20"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Choisissez votre quiz :</label>
+            <div class="quiz-selector">
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="1" checked>
+                <div class="quiz-card">
+                  <div class="quiz-icon">🕹️</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 1 : Classiques</strong>
+                    <span>Rétro gaming, années 80-90</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="2">
+                <div class="quiz-card">
+                  <div class="quiz-icon">🎮</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 2 : Jeux Modernes</strong>
+                    <span>AAA, indés, 2010-2024</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="3">
+                <div class="quiz-card">
+                  <div class="quiz-icon">🏆</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 3 : Culture Gaming</strong>
+                    <span>Esport, streamers, événements</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="4">
+                <div class="quiz-card">
+                  <div class="quiz-icon">👾</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 4 : Personnages</strong>
+                    <span>Héros, méchants, univers</span>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-large">
+            Commencer le Quiz
+          </button>
+        </form>
+      </div>
+
+      <div class="info-cards">
+        <div class="info-card">
+          <div class="info-icon">❓</div>
+          <div class="info-text">
+            <strong>20 Questions</strong>
+            <span>Par quiz</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">⏱️</div>
+          <div class="info-text">
+            <strong>30 secondes</strong>
+            <span>Par question</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">🏆</div>
+          <div class="info-text">
+            <strong>Classement</strong>
+            <span>Battez les autres joueurs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="/" class="link">← Retour à l'accueil</a>
+        <span style="color: var(--text-secondary); margin: 0 15px;">•</span>
+        <a href="/quiz/leaderboard" class="link">Voir le classement</a>
+      </div>
+
+      <div class="brand-footer">
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 30px;">
+          Un événement
+          <img src="/images/branding/logo.png" alt="VERDON" class="footer-logo">
+          &
+          <img src="/images/branding/dj_logo.jpg" alt="DJ Prestige Sound" class="footer-logo">
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
