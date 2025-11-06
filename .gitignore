@@ -4,3 +4,4 @@ database/*.db
 *.log
 npm-debug.log*
 .env
+.vercel

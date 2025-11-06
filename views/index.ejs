@@ -15,7 +15,7 @@
       </div>
 
       <div class="start-form">
-        <form action="/quiz/start" method="POST">
+        <form action="/quiz/start" method="POST" id="quizForm">
           <div class="form-group">
             <label for="playerName">Votre pseudo :</label>
             <input
@@ -28,6 +28,55 @@
             >
           </div>
 
+          <div class="form-group">
+            <label>Choisissez votre quiz :</label>
+            <div class="quiz-selector">
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="1" checked>
+                <div class="quiz-card">
+                  <div class="quiz-icon">🕹️</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 1 : Classiques</strong>
+                    <span>Rétro gaming, années 80-90</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="2">
+                <div class="quiz-card">
+                  <div class="quiz-icon">🎮</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 2 : Jeux Modernes</strong>
+                    <span>AAA, indés, 2010-2024</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="3">
+                <div class="quiz-card">
+                  <div class="quiz-icon">🏆</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 3 : Culture Gaming</strong>
+                    <span>Esport, streamers, événements</span>
+                  </div>
+                </div>
+              </label>
+
+              <label class="quiz-option">
+                <input type="radio" name="quizId" value="4">
+                <div class="quiz-card">
+                  <div class="quiz-icon">👾</div>
+                  <div class="quiz-info">
+                    <strong>Quiz 4 : Personnages</strong>
+                    <span>Héros, méchants, univers</span>
+                  </div>
+                </div>
+              </label>
+            </div>
+          </div>
+
           <button type="submit" class="btn btn-primary btn-large">
             Commencer le Quiz
           </button>
@@ -38,8 +87,8 @@
         <div class="info-card">
           <div class="info-icon">❓</div>
           <div class="info-text">
-            <strong>10 Questions</strong>
-            <span>Sur les jeux vidéo cultes</span>
+            <strong>20 Questions</strong>
+            <span>Par quiz</span>
           </div>
         </div>
 

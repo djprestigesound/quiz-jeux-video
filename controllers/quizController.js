@@ -4,16 +4,18 @@ const config = require('../config/config');
 
 exports.start = async (req, res) => {
   try {
-    const { playerName } = req.body;
+    const { playerName, quizId } = req.body;
+    const selectedQuizId = parseInt(quizId) || 1;
     const sessionId = await QuizSession.create(playerName || 'Joueur');
 
-    // Récupérer des questions aléatoires
-    const questions = await Question.getRandom(config.quiz.questionsPerSession);
+    // Récupérer des questions aléatoires pour le quiz sélectionné
+    const questions = await Question.getRandom(config.quiz.questionsPerSession, selectedQuizId);
 
     // Stocker UNIQUEMENT les IDs des questions (pas les questions complètes - limite cookie 4KB)
     const questionIds = questions.map(q => q.id);
 
     req.session.sessionId = sessionId;
+    req.session.quizId = selectedQuizId;
     req.session.questionIds = questionIds;
     req.session.currentQuestionIndex = 0;
     req.session.score = 0;
