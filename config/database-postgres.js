@@ -5,6 +5,12 @@ class DatabasePostgres {
     this.pool = null;
   }
 
+  // Convertir les placeholders SQLite (?) en PostgreSQL ($1, $2, etc.)
+  convertPlaceholders(sql) {
+    let index = 0;
+    return sql.replace(/\?/g, () => `$${++index}`);
+  }
+
   connect() {
     return new Promise((resolve, reject) => {
       // Utiliser la variable d'environnement POSTGRES_URL de Vercel/Neon
@@ -35,7 +41,8 @@ class DatabasePostgres {
 
   async run(sql, params = []) {
     if (!this.pool) await this.connect();
-    const result = await this.pool.query(sql, params);
+    const pgSql = this.convertPlaceholders(sql);
+    const result = await this.pool.query(pgSql, params);
     return {
       lastID: result.rows[0]?.id || null,
       changes: result.rowCount
@@ -44,13 +51,15 @@ class DatabasePostgres {
 
   async get(sql, params = []) {
     if (!this.pool) await this.connect();
-    const result = await this.pool.query(sql, params);
+    const pgSql = this.convertPlaceholders(sql);
+    const result = await this.pool.query(pgSql, params);
     return result.rows[0] || null;
   }
 
   async all(sql, params = []) {
     if (!this.pool) await this.connect();
-    const result = await this.pool.query(sql, params);
+    const pgSql = this.convertPlaceholders(sql);
+    const result = await this.pool.query(pgSql, params);
     return result.rows;
   }
 
