@@ -10,9 +10,11 @@ exports.start = async (req, res) => {
     // Récupérer des questions aléatoires
     const questions = await Question.getRandom(config.quiz.questionsPerSession);
 
-    // Stocker les questions dans la session
+    // Stocker UNIQUEMENT les IDs des questions (pas les questions complètes - limite cookie 4KB)
+    const questionIds = questions.map(q => q.id);
+
     req.session.sessionId = sessionId;
-    req.session.questions = questions;
+    req.session.questionIds = questionIds;
     req.session.currentQuestionIndex = 0;
     req.session.score = 0;
     req.session.correctAnswers = 0;
@@ -26,22 +28,25 @@ exports.start = async (req, res) => {
 
 exports.showQuestion = async (req, res) => {
   try {
-    const { questions, currentQuestionIndex, score, correctAnswers } = req.session;
+    const { questionIds, currentQuestionIndex, score, correctAnswers } = req.session;
 
-    if (!questions || currentQuestionIndex >= questions.length) {
+    if (!questionIds || currentQuestionIndex >= questionIds.length) {
       return res.redirect('/quiz/results');
     }
 
-    const currentQuestion = questions[currentQuestionIndex];
-    const totalQuestions = questions.length;
+    // Récupérer la question depuis la DB
+    const currentQuestionId = questionIds[currentQuestionIndex];
+    const currentQuestion = await Question.getById(currentQuestionId);
+
+    const totalQuestions = questionIds.length;
     const questionNumber = currentQuestionIndex + 1;
 
     res.render('quiz/question', {
       question: currentQuestion,
       questionNumber,
       totalQuestions,
-      score,
-      correctAnswers,
+      score: score || 0,
+      correctAnswers: correctAnswers || 0,
       timePerQuestion: config.quiz.timePerQuestion
     });
   } catch (error) {
@@ -53,13 +58,16 @@ exports.showQuestion = async (req, res) => {
 exports.submitAnswer = async (req, res) => {
   try {
     const { answer } = req.body;
-    const { questions, currentQuestionIndex, sessionId, score, correctAnswers } = req.session;
+    const { questionIds, currentQuestionIndex, sessionId, score, correctAnswers } = req.session;
 
-    if (!questions || currentQuestionIndex >= questions.length) {
+    if (!questionIds || currentQuestionIndex >= questionIds.length) {
       return res.json({ error: 'Session invalide' });
     }
 
-    const currentQuestion = questions[currentQuestionIndex];
+    // Récupérer la question depuis la DB
+    const currentQuestionId = questionIds[currentQuestionIndex];
+    const currentQuestion = await Question.getById(currentQuestionId);
+
     const isCorrect = answer === currentQuestion.correct_answer;
 
     // Sauvegarder la réponse
@@ -85,7 +93,7 @@ exports.submitAnswer = async (req, res) => {
       correct: isCorrect,
       correctAnswer: currentQuestion.correct_answer,
       score: newScore,
-      nextQuestion: newQuestionIndex < questions.length
+      nextQuestion: newQuestionIndex < questionIds.length
     });
   } catch (error) {
     console.error('Erreur lors de la soumission de la réponse:', error);
@@ -95,13 +103,13 @@ exports.submitAnswer = async (req, res) => {
 
 exports.showResults = async (req, res) => {
   try {
-    const { sessionId, score, correctAnswers, questions } = req.session;
+    const { sessionId, score, correctAnswers, questionIds } = req.session;
 
     if (!sessionId) {
       return res.redirect('/');
     }
 
-    const totalQuestions = questions ? questions.length : 0;
+    const totalQuestions = questionIds ? questionIds.length : 0;
 
     // Mettre à jour le score final
     await QuizSession.updateScore(sessionId, score, correctAnswers, totalQuestions);
