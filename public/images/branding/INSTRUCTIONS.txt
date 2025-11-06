@@ -1,0 +1,31 @@
+════════════════════════════════════════════════════════════
+  COMMENT AJOUTER LE LOGO DE VOTRE ENTREPRISE
+════════════════════════════════════════════════════════════
+
+📁 EMPLACEMENT DES FICHIERS
+   ~/quiz-jeux-video/public/images/branding/
+
+📝 INSTRUCTIONS
+
+1. Envoyez-moi le logo dans le chat Claude Code
+   
+2. Je le placerai automatiquement dans ce dossier
+
+3. Format recommandé :
+   - PNG avec fond transparent
+   - Largeur : 300-600px
+   - Haute résolution
+
+4. Nom du fichier : logo.png ou logo.svg
+
+════════════════════════════════════════════════════════════
+
+⚡ MISE EN PLACE RAPIDE
+
+Une fois le logo envoyé, je vais automatiquement :
+- L'intégrer sur la page d'accueil
+- L'ajouter dans le header pendant le quiz
+- Le mettre sur la page de résultats
+- L'afficher dans le footer
+
+════════════════════════════════════════════════════════════

@@ -1707,3 +1707,80 @@ td code {
     font-size: 2rem;
   }
 }
+
+/* Branding VERDON */
+.brand-logo-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 20px 0;
+}
+
+.company-logo {
+  max-width: 300px;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.3));
+  transition: all 0.3s ease;
+}
+
+.company-logo:hover {
+  filter: drop-shadow(0 0 30px rgba(0, 240, 255, 0.5));
+  transform: scale(1.05);
+}
+
+.brand-footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 240, 255, 0.2);
+}
+
+.footer-logo {
+  height: 40px;
+  width: auto;
+  vertical-align: middle;
+  margin-left: 10px;
+  filter: brightness(1.1);
+}
+
+.quiz-brand-header {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.quiz-brand-logo {
+  max-width: 150px;
+  height: auto;
+  opacity: 0.9;
+}
+
+.results-brand {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.results-brand img {
+  max-width: 250px;
+  height: auto;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .company-logo {
+    max-width: 200px;
+  }
+  
+  .quiz-brand-header {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .quiz-brand-logo {
+    max-width: 100px;
+  }
+  
+  .footer-logo {
+    height: 30px;
+  }
+}
