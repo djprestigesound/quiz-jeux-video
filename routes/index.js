@@ -8,13 +8,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/play', async (req, res) => {
-  try {
-    const activeEvent = await QuizEvent.getActive();
-    res.render('play', { activeEvent });
-  } catch (error) {
-    console.error('Erreur lors du chargement de /play:', error);
-    res.render('play', { activeEvent: null });
-  }
+  // Mode libre : pas de salle d'attente, les participants choisissent leur quiz
+  res.render('play', { activeEvent: null });
 });
 
 router.get('/qrcode', qrController.showQRCode);
