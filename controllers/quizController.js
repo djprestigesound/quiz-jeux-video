@@ -169,7 +169,7 @@ exports.leaderboard = async (req, res) => {
 // Mode écran géant pour projeter le classement
 exports.leaderboardDisplay = async (req, res) => {
   try {
-    const leaderboard = await QuizSession.getLeaderboard(10); // Top 10 pour l'écran
+    const leaderboard = await QuizSession.getLeaderboard(20); // Top 20 pour l'écran géant
     const activePlayers = await QuizSession.getActiveSessions(); // Joueurs en cours
     res.render('quiz/leaderboard-display', { leaderboard, activePlayers });
   } catch (error) {

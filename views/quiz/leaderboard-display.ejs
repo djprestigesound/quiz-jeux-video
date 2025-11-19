@@ -6,86 +6,103 @@
   <title>🏆 Classement en Direct - Quiz Jeux Vidéo</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body class="display-mode">
-  <div class="display-header">
-    <div class="display-branding">
-      <img src="/images/branding/logo.png" alt="VERDON" class="display-logo">
-      <span class="display-separator">&</span>
-      <img src="/images/branding/dj_logo.jpg" alt="DJ Prestige Sound" class="display-logo">
-    </div>
-    <h1>🏆 Classement en Direct</h1>
-    <p class="display-subtitle">Quiz Jeux Vidéo - Un événement VERDON & DJ Prestige Sound</p>
-  </div>
+<body class="display-mode" style="margin: 0; padding: 0; background: var(--bg-primary); overflow: hidden;">
+  <div style="display: grid; grid-template-columns: 1fr 350px; gap: 20px; height: 100vh; padding: 15px;">
 
-  <!-- Joueurs en cours -->
-  <% if (activePlayers && activePlayers.length > 0) { %>
-    <div class="active-players-section" style="background: linear-gradient(135deg, rgba(255, 0, 110, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%); padding: 30px; margin-bottom: 40px; border-radius: 20px; border: 2px solid rgba(255, 0, 110, 0.3);">
-      <h2 style="font-size: 2.5rem; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-        <span style="margin-right: 15px;">🎮</span>
-        <span>Joueurs en cours</span>
-        <span style="margin-left: 15px; font-size: 1.5rem; color: var(--primary);">(<%= activePlayers.length %>)</span>
-      </h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px;">
-        <% activePlayers.forEach((player) => {
-          const quizNames = { 1: '🕹️ Classiques', 2: '🎮 Modernes', 3: '🏆 Culture' };
-          const timeElapsed = Math.floor((Date.now() - new Date(player.started_at).getTime()) / 1000 / 60);
-        %>
-          <div style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; animation: pulse-border 2s ease-in-out infinite;">
-            <div>
-              <div style="font-size: 1.5rem; font-weight: bold; color: var(--text-primary);"><%= player.player_name %></div>
-              <div style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 5px;"><%= quizNames[player.quiz_id] || 'Quiz' %></div>
-            </div>
-            <div style="font-size: 1.8rem; animation: pulse 1.5s ease-in-out infinite;">⏱️</div>
-          </div>
-        <% }); %>
-      </div>
-    </div>
-  <% } %>
-
-  <!-- Classement -->
-  <div class="display-leaderboard">
-    <% if (leaderboard.length === 0 && (!activePlayers || activePlayers.length === 0)) { %>
-      <div class="empty-state" style="text-align: center; padding: 100px 0; font-size: 2rem; color: var(--text-secondary);">
-        <p style="font-size: 5rem; margin-bottom: 20px;">🎮</p>
-        <p>Aucun joueur pour le moment</p>
-        <p style="font-size: 1.5rem; margin-top: 20px;">En attente des participants...</p>
-      </div>
-    <% } else if (leaderboard.length > 0) { %>
-      <h2 style="font-size: 2.5rem; margin-bottom: 30px; text-align: center;">🏆 Classement Final</h2>
-      <% leaderboard.forEach((entry, index) => { %>
-        <div class="display-item rank-<%= index + 1 %>">
-          <div class="display-rank rank-<%= index + 1 %>">
-            <% if (index === 0) { %>
-              🥇
-            <% } else if (index === 1) { %>
-              🥈
-            <% } else if (index === 2) { %>
-              🥉
-            <% } else { %>
-              #<%= index + 1 %>
-            <% } %>
-          </div>
-
-          <div class="display-player">
-            <div class="display-player-name"><%= entry.player_name %></div>
-            <div class="display-player-stats">
-              <%= entry.correct_answers %> / <%= entry.total_questions %> bonnes réponses
-            </div>
-          </div>
-
-          <div class="display-score">
-            <%= entry.score %>
-          </div>
+    <!-- Colonne principale : Classement -->
+    <div style="display: flex; flex-direction: column; overflow: hidden;">
+      <!-- Header compact -->
+      <div style="text-align: center; margin-bottom: 15px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px;">
+          <img src="/images/branding/logo.png" alt="VERDON" style="height: 50px;">
+          <span style="color: var(--text-secondary); font-size: 1.5rem;">&</span>
+          <img src="/images/branding/dj_logo.jpg" alt="DJ Prestige Sound" style="height: 50px;">
         </div>
-      <% }); %>
-    <% } %>
-  </div>
+        <h1 style="font-size: 2.5rem; margin: 0;">🏆 Classement en Direct</h1>
+      </div>
 
-  <div class="display-footer">
-    <div class="display-refresh">
-      <span class="refresh-dot"></span>
-      <span>Mise à jour automatique toutes les 3 secondes</span>
+      <!-- Classement scrollable -->
+      <div style="flex: 1; overflow-y: auto; padding-right: 10px;">
+        <% if (leaderboard.length === 0 && (!activePlayers || activePlayers.length === 0)) { %>
+          <div style="text-align: center; padding: 100px 0; font-size: 2rem; color: var(--text-secondary);">
+            <p style="font-size: 5rem; margin-bottom: 20px;">🎮</p>
+            <p>Aucun joueur pour le moment</p>
+            <p style="font-size: 1.5rem; margin-top: 20px;">En attente des participants...</p>
+          </div>
+        <% } else if (leaderboard.length > 0) { %>
+          <% leaderboard.forEach((entry, index) => { %>
+            <div style="background: var(--bg-card); margin-bottom: 12px; padding: 15px 20px; border-radius: 12px; display: flex; align-items: center; gap: 20px; border: 2px solid <%= index < 3 ? 'var(--primary)' : 'var(--border)' %>;">
+              <!-- Rang -->
+              <div style="font-size: 2rem; font-weight: bold; min-width: 60px; text-align: center;">
+                <% if (index === 0) { %>
+                  🥇
+                <% } else if (index === 1) { %>
+                  🥈
+                <% } else if (index === 2) { %>
+                  🥉
+                <% } else { %>
+                  <span style="color: var(--text-secondary);">#<%= index + 1 %></span>
+                <% } %>
+              </div>
+
+              <!-- Nom du joueur -->
+              <div style="flex: 1;">
+                <div style="font-size: 1.8rem; font-weight: bold; color: var(--text-primary);"><%= entry.player_name %></div>
+                <div style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 3px;">
+                  <%= entry.correct_answers %>/<%= entry.total_questions %> bonnes réponses
+                </div>
+              </div>
+
+              <!-- Score -->
+              <div style="font-size: 2.5rem; font-weight: bold; color: var(--primary); min-width: 120px; text-align: right;">
+                <%= entry.score %>
+              </div>
+            </div>
+          <% }); %>
+        <% } %>
+      </div>
+
+      <!-- Footer info -->
+      <div style="text-align: center; margin-top: 15px; padding: 10px; background: rgba(255, 0, 110, 0.1); border-radius: 10px;">
+        <span style="color: var(--text-secondary); font-size: 1rem;">
+          <span class="refresh-dot" style="display: inline-block; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; margin-right: 8px; animation: pulse 1s ease-in-out infinite;"></span>
+          Mise à jour automatique toutes les 3 secondes
+        </span>
+      </div>
     </div>
+
+    <!-- Colonne latérale : Joueurs en cours -->
+    <div style="background: linear-gradient(135deg, rgba(255, 0, 110, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%); border-radius: 20px; border: 2px solid rgba(255, 0, 110, 0.4); padding: 20px; display: flex; flex-direction: column; overflow: hidden;">
+      <h2 style="font-size: 2rem; margin: 0 0 20px 0; text-align: center; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <span>🎮</span>
+        <span>En cours</span>
+      </h2>
+
+      <% if (activePlayers && activePlayers.length > 0) { %>
+        <div style="flex: 1; overflow-y: auto;">
+          <% activePlayers.forEach((player) => {
+            const quizNames = { 1: '🕹️ Classiques', 2: '🎮 Modernes', 3: '🏆 Culture' };
+          %>
+            <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 12px; border: 2px solid var(--primary); animation: pulse-border 2s ease-in-out infinite;">
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--text-primary); margin-bottom: 5px;"><%= player.player_name %></div>
+              <div style="font-size: 1rem; color: var(--text-secondary); display: flex; align-items: center; justify-content: space-between;">
+                <span><%= quizNames[player.quiz_id] || 'Quiz' %></span>
+                <span style="font-size: 1.5rem; animation: pulse 1.5s ease-in-out infinite;">⏱️</span>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+        <div style="text-align: center; margin-top: 15px; padding: 10px; background: rgba(255, 0, 110, 0.2); border-radius: 8px;">
+          <span style="font-size: 1.5rem; font-weight: bold; color: var(--primary);"><%= activePlayers.length %> joueur<%= activePlayers.length > 1 ? 's' : '' %></span>
+        </div>
+      <% } else { %>
+        <div style="text-align: center; padding: 50px 20px; color: var(--text-secondary);">
+          <p style="font-size: 3rem; margin-bottom: 10px;">💤</p>
+          <p style="font-size: 1.2rem;">Personne en jeu</p>
+        </div>
+      <% } %>
+    </div>
+
   </div>
 
   <style>
@@ -109,6 +126,25 @@
         opacity: 1;
         transform: scale(1.2);
       }
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 0, 110, 0.8);
     }
   </style>
 
