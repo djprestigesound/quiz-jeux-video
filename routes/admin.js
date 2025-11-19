@@ -23,4 +23,10 @@ router.post('/questions/delete/:id', adminController.deleteQuestion);
 router.get('/qrcodes', adminController.showQRCodes);
 router.get('/sessions', adminController.showSessions);
 
+// Gestion des événements
+router.get('/events', adminController.showEvents);
+router.post('/events/create', adminController.createEvent);
+router.post('/events/:eventId/start', adminController.startEvent);
+router.post('/events/:eventId/finish', adminController.finishEvent);
+
 module.exports = router;

@@ -1,5 +1,6 @@
 const Question = require('../models/Question');
 const QuizSession = require('../models/QuizSession');
+const QuizEvent = require('../models/QuizEvent');
 const QRCode = require('qrcode');
 const config = require('../config/config');
 
@@ -154,5 +155,60 @@ exports.showSessions = async (req, res) => {
   } catch (error) {
     console.error('Erreur:', error);
     res.status(500).send('Erreur');
+  }
+};
+
+// Gestion des événements
+exports.showEvents = async (req, res) => {
+  try {
+    const events = await QuizEvent.getAll();
+    const activeEvent = await QuizEvent.getActive();
+    let participants = [];
+
+    if (activeEvent) {
+      participants = await QuizEvent.getWaitingParticipants(activeEvent.id);
+    }
+
+    res.render('admin/events', {
+      events,
+      activeEvent,
+      participants
+    });
+  } catch (error) {
+    console.error('Erreur lors de l\'affichage des événements:', error);
+    res.status(500).send('Erreur lors de l\'affichage des événements');
+  }
+};
+
+exports.createEvent = async (req, res) => {
+  try {
+    const { name, quizId } = req.body;
+    await QuizEvent.create(name, quizId);
+    res.redirect('/admin/events');
+  } catch (error) {
+    console.error('Erreur lors de la création de l\'événement:', error);
+    res.status(500).send('Erreur lors de la création de l\'événement');
+  }
+};
+
+exports.startEvent = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    await QuizEvent.start(eventId);
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Erreur lors du démarrage de l\'événement:', error);
+    res.status(500).json({ error: 'Erreur lors du démarrage de l\'événement' });
+  }
+};
+
+exports.finishEvent = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    await QuizEvent.finish(eventId);
+    res.redirect('/admin/events');
+  } catch (error) {
+    console.error('Erreur lors de la fin de l\'événement:', error);
+    res.status(500).send('Erreur lors de la fin de l\'événement');
   }
 };

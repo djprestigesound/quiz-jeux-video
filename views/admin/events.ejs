@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion des Événements - Quiz Jeux Vidéo</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .event-control-panel {
+      background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+    .participants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .participant-card {
+      background: var(--bg-card);
+      padding: 15px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      text-align: center;
+    }
+    .participant-name {
+      font-weight: bold;
+      color: var(--primary);
+    }
+    .participant-time {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 5px;
+    }
+    .start-button {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 20px 40px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s ease;
+    }
+    .start-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+    .start-button:disabled {
+      background: #6b7280;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+    .event-status {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .status-waiting {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .status-started {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .status-finished {
+      background: #e5e7eb;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <%- include('partials/nav') %>
+
+    <div class="admin-content">
+      <div class="page-header">
+        <h1>🎯 Gestion des Événements</h1>
+      </div>
+
+      <% if (activeEvent) { %>
+        <!-- Panneau de contrôle de l'événement actif -->
+        <div class="event-control-panel">
+          <h2 style="margin-top: 0;">
+            <%= activeEvent.name %>
+            <% if (activeEvent.status === 'waiting') { %>
+              <span class="event-status status-waiting">En attente</span>
+            <% } else if (activeEvent.status === 'started') { %>
+              <span class="event-status status-started">En cours</span>
+            <% } %>
+          </h2>
+
+          <div style="margin: 20px 0;">
+            <p style="font-size: 1.2rem; margin: 10px 0;">
+              <strong><%= participants.length %> participant<%= participants.length > 1 ? 's' : '' %></strong> en attente
+            </p>
+          </div>
+
+          <% if (activeEvent.status === 'waiting') { %>
+            <button
+              id="startEventBtn"
+              class="start-button"
+              onclick="startEvent(<%= activeEvent.id %>)"
+              <%= participants.length === 0 ? 'disabled' : '' %>
+            >
+              🚀 Lancer le Quiz
+            </button>
+            <p style="margin-top: 15px; opacity: 0.9;">
+              <%= participants.length === 0 ? 'Attendez que des participants rejoignent la salle d\'attente' : 'Tous les participants pourront commencer en même temps' %>
+            </p>
+          <% } else if (activeEvent.status === 'started') { %>
+            <p style="font-size: 1.1rem;">
+              Le quiz est en cours ! Les participants peuvent maintenant jouer.
+            </p>
+            <form action="/admin/events/<%= activeEvent.id %>/finish" method="POST" style="margin-top: 20px;">
+              <button type="submit" class="btn btn-secondary">
+                Terminer l'événement
+              </button>
+            </form>
+          <% } %>
+        </div>
+
+        <% if (participants.length > 0) { %>
+          <!-- Liste des participants -->
+          <div class="section">
+            <h2>👥 Participants en attente</h2>
+            <div class="participants-grid" id="participantsGrid">
+              <% participants.forEach(participant => { %>
+                <div class="participant-card">
+                  <div class="participant-name"><%= participant.player_name %></div>
+                  <div class="participant-time">
+                    Rejoint à <%= new Date(participant.joined_at).toLocaleTimeString('fr-FR') %>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
+      <% } else { %>
+        <!-- Aucun événement actif : formulaire de création -->
+        <div class="section">
+          <h2>Créer un nouvel événement</h2>
+          <form action="/admin/events/create" method="POST" class="form-container">
+            <div class="form-group">
+              <label for="name">Nom de l'événement :</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Ex: Quiz Gaming - 28 Novembre"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="quizId">Quiz associé :</label>
+              <select id="quizId" name="quizId" required>
+                <option value="1">Quiz 1 : Classiques</option>
+                <option value="2">Quiz 2 : Jeux Modernes</option>
+                <option value="3">Quiz 3 : Culture Gaming</option>
+                <option value="4">Quiz 4 : Personnages</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large">
+              Créer l'événement
+            </button>
+          </form>
+        </div>
+      <% } %>
+
+      <!-- Historique des événements -->
+      <div class="section" style="margin-top: 40px;">
+        <h2>📋 Historique des événements</h2>
+        <div class="sessions-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Quiz</th>
+                <th>Statut</th>
+                <th>Créé le</th>
+                <th>Démarré le</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% events.forEach(event => { %>
+                <tr>
+                  <td><strong><%= event.name %></strong></td>
+                  <td>Quiz <%= event.quiz_id %></td>
+                  <td>
+                    <% if (event.status === 'waiting') { %>
+                      <span class="event-status status-waiting">En attente</span>
+                    <% } else if (event.status === 'started') { %>
+                      <span class="event-status status-started">En cours</span>
+                    <% } else { %>
+                      <span class="event-status status-finished">Terminé</span>
+                    <% } %>
+                  </td>
+                  <td><%= new Date(event.created_at).toLocaleString('fr-FR') %></td>
+                  <td>
+                    <%= event.started_at ? new Date(event.started_at).toLocaleString('fr-FR') : '-' %>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function startEvent(eventId) {
+      if (!confirm('Êtes-vous sûr de vouloir lancer le quiz ? Tous les participants en attente pourront commencer.')) {
+        return;
+      }
+
+      const btn = document.getElementById('startEventBtn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Lancement en cours...';
+
+      try {
+        const response = await fetch(`/admin/events/${eventId}/start`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+          btn.textContent = '✅ Quiz lancé !';
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+        } else {
+          alert('Erreur lors du lancement du quiz');
+          btn.disabled = false;
+          btn.textContent = '🚀 Lancer le Quiz';
+        }
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors du lancement du quiz');
+        btn.disabled = false;
+        btn.textContent = '🚀 Lancer le Quiz';
+      }
+    }
+
+    // Auto-refresh pour voir les nouveaux participants
+    <% if (activeEvent && activeEvent.status === 'waiting') { %>
+      setInterval(() => {
+        location.reload();
+      }, 5000); // Refresh toutes les 5 secondes
+    <% } %>
+  </script>
+</body>
+</html>

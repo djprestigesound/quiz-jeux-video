@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Commencer le Quiz - Quiz Jeux Vidéo</title>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .waiting-room {
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .waiting-animation {
+      font-size: 3rem;
+      margin: 20px 0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+    .participant-count {
+      font-size: 1.2rem;
+      color: var(--primary);
+      font-weight: bold;
+      margin: 20px 0;
+    }
+    .waiting-message {
+      font-size: 1.1rem;
+      margin: 20px 0;
+      color: var(--text-secondary);
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -17,79 +43,153 @@
         </div>
         <p class="event-tagline">Un événement VERDON & DJ Prestige Sound</p>
       </div>
-      <div class="game-header">
-        <h1>🎮 Commencer le Quiz</h1>
-        <p class="subtitle">C'est parti pour le quiz !</p>
-      </div>
 
-      <div class="start-form">
-        <form action="/quiz/start" method="POST" id="quizForm">
-          <div class="form-group">
-            <label for="playerName">Votre pseudo :</label>
-            <input
-              type="text"
-              id="playerName"
-              name="playerName"
-              placeholder="Entrez votre pseudo"
-              maxlength="20"
-              required
-            >
-          </div>
+      <% if (activeEvent && activeEvent.status === 'waiting') { %>
+        <!-- SALLE D'ATTENTE -->
+        <div class="game-header">
+          <h1>🎮 <%= activeEvent.name %></h1>
+          <p class="subtitle">Salle d'attente</p>
+        </div>
 
-          <div class="form-group">
-            <label>Choisissez votre quiz :</label>
-            <div class="quiz-selector">
-              <label class="quiz-option">
-                <input type="radio" name="quizId" value="1" checked>
-                <div class="quiz-card">
-                  <div class="quiz-icon">🕹️</div>
-                  <div class="quiz-info">
-                    <strong>Quiz 1 : Classiques</strong>
-                    <span>Rétro gaming, années 80-90</span>
-                  </div>
+        <div class="waiting-room" id="waitingRoom">
+          <div class="waiting-animation">⏳</div>
+          <h2>En attente du démarrage...</h2>
+          <p class="waiting-message">L'organisateur va lancer le quiz dans quelques instants.</p>
+          <p class="participant-count" id="participantCount">Chargement...</p>
+
+          <% if (!locals.playerName) { %>
+            <!-- Formulaire d'inscription -->
+            <div class="start-form" style="margin-top: 30px;">
+              <form id="joinEventForm">
+                <div class="form-group">
+                  <label for="playerName">Votre pseudo :</label>
+                  <input
+                    type="text"
+                    id="playerName"
+                    name="playerName"
+                    placeholder="Entrez votre pseudo"
+                    maxlength="20"
+                    required
+                  >
                 </div>
-              </label>
-
-              <label class="quiz-option">
-                <input type="radio" name="quizId" value="2">
-                <div class="quiz-card">
-                  <div class="quiz-icon">🎮</div>
-                  <div class="quiz-info">
-                    <strong>Quiz 2 : Jeux Modernes</strong>
-                    <span>AAA, indés, 2010-2024</span>
-                  </div>
-                </div>
-              </label>
-
-              <label class="quiz-option">
-                <input type="radio" name="quizId" value="3">
-                <div class="quiz-card">
-                  <div class="quiz-icon">🏆</div>
-                  <div class="quiz-info">
-                    <strong>Quiz 3 : Culture Gaming</strong>
-                    <span>Esport, streamers, événements</span>
-                  </div>
-                </div>
-              </label>
-
-              <label class="quiz-option">
-                <input type="radio" name="quizId" value="4">
-                <div class="quiz-card">
-                  <div class="quiz-icon">👾</div>
-                  <div class="quiz-info">
-                    <strong>Quiz 4 : Personnages</strong>
-                    <span>Héros, méchants, univers</span>
-                  </div>
-                </div>
-              </label>
+                <button type="submit" class="btn btn-primary btn-large">
+                  Rejoindre la salle d'attente
+                </button>
+              </form>
             </div>
-          </div>
+          <% } else { %>
+            <p style="color: var(--success); margin-top: 20px; font-weight: bold;">
+              Vous êtes inscrit ! Le quiz démarrera automatiquement.
+            </p>
+          <% } %>
+        </div>
 
-          <button type="submit" class="btn btn-primary btn-large">
-            Commencer le Quiz
-          </button>
-        </form>
-      </div>
+      <% } else if (activeEvent && activeEvent.status === 'started') { %>
+        <!-- ÉVÉNEMENT DÉMARRÉ : Formulaire pour commencer -->
+        <div class="game-header">
+          <h1>🎮 <%= activeEvent.name %></h1>
+          <p class="subtitle">Le quiz a commencé !</p>
+        </div>
+
+        <div class="start-form">
+          <form action="/quiz/start" method="POST" id="quizForm">
+            <input type="hidden" name="eventId" value="<%= activeEvent.id %>">
+            <input type="hidden" name="quizId" value="<%= activeEvent.quiz_id %>">
+
+            <div class="form-group">
+              <label for="playerName">Votre pseudo :</label>
+              <input
+                type="text"
+                id="playerName"
+                name="playerName"
+                placeholder="Entrez votre pseudo"
+                maxlength="20"
+                required
+              >
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large">
+              Commencer le Quiz
+            </button>
+          </form>
+        </div>
+
+      <% } else { %>
+        <!-- MODE LIBRE : Pas d'événement actif -->
+        <div class="game-header">
+          <h1>🎮 Commencer le Quiz</h1>
+          <p class="subtitle">C'est parti pour le quiz !</p>
+        </div>
+
+        <div class="start-form">
+          <form action="/quiz/start" method="POST" id="quizForm">
+            <div class="form-group">
+              <label for="playerName">Votre pseudo :</label>
+              <input
+                type="text"
+                id="playerName"
+                name="playerName"
+                placeholder="Entrez votre pseudo"
+                maxlength="20"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label>Choisissez votre quiz :</label>
+              <div class="quiz-selector">
+                <label class="quiz-option">
+                  <input type="radio" name="quizId" value="1" checked>
+                  <div class="quiz-card">
+                    <div class="quiz-icon">🕹️</div>
+                    <div class="quiz-info">
+                      <strong>Quiz 1 : Classiques</strong>
+                      <span>Rétro gaming, années 80-90</span>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="quizId" value="2">
+                  <div class="quiz-card">
+                    <div class="quiz-icon">🎮</div>
+                    <div class="quiz-info">
+                      <strong>Quiz 2 : Jeux Modernes</strong>
+                      <span>AAA, indés, 2010-2024</span>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="quizId" value="3">
+                  <div class="quiz-card">
+                    <div class="quiz-icon">🏆</div>
+                    <div class="quiz-info">
+                      <strong>Quiz 3 : Culture Gaming</strong>
+                      <span>Esport, streamers, événements</span>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="quiz-option">
+                  <input type="radio" name="quizId" value="4">
+                  <div class="quiz-card">
+                    <div class="quiz-icon">👾</div>
+                    <div class="quiz-info">
+                      <strong>Quiz 4 : Personnages</strong>
+                      <span>Héros, méchants, univers</span>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-large">
+              Commencer le Quiz
+            </button>
+          </form>
+        </div>
+      <% } %>
 
       <div class="info-cards">
         <div class="info-card">
@@ -133,5 +233,90 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Gestion de l'inscription à l'événement
+    const joinEventForm = document.getElementById('joinEventForm');
+    if (joinEventForm) {
+      joinEventForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const playerName = document.getElementById('playerName').value.trim();
+
+        if (!playerName) {
+          alert('Veuillez entrer votre pseudo');
+          return;
+        }
+
+        try {
+          const response = await fetch('/events/join', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ playerName })
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            // Sauvegarder le nom dans le localStorage
+            localStorage.setItem('playerName', playerName);
+            // Recharger la page pour afficher le message d'inscription
+            location.reload();
+          } else {
+            alert(data.error || 'Erreur lors de l\'inscription');
+          }
+        } catch (error) {
+          console.error('Erreur:', error);
+          alert('Erreur lors de l\'inscription');
+        }
+      });
+    }
+
+    // Polling pour vérifier le statut de l'événement
+    <% if (activeEvent && activeEvent.status === 'waiting') { %>
+      let pollingInterval;
+
+      async function checkEventStatus() {
+        try {
+          const response = await fetch('/events/status');
+          const data = await response.json();
+
+          // Mettre à jour le compteur de participants
+          const countElement = document.getElementById('participantCount');
+          if (countElement && data.participantCount !== undefined) {
+            const plural = data.participantCount > 1 ? 's' : '';
+            countElement.textContent = `${data.participantCount} participant${plural} en attente`;
+          }
+
+          // Si l'événement a démarré, rediriger vers le formulaire de quiz
+          if (data.status === 'started') {
+            clearInterval(pollingInterval);
+            location.reload();
+          }
+        } catch (error) {
+          console.error('Erreur lors de la vérification du statut:', error);
+        }
+      }
+
+      // Vérifier le statut immédiatement
+      checkEventStatus();
+
+      // Puis toutes les 2 secondes
+      pollingInterval = setInterval(checkEventStatus, 2000);
+
+      // Nettoyer l'intervalle quand on quitte la page
+      window.addEventListener('beforeunload', () => {
+        if (pollingInterval) clearInterval(pollingInterval);
+      });
+
+      // Restaurer le nom du joueur s'il est dans le localStorage
+      const savedPlayerName = localStorage.getItem('playerName');
+      if (savedPlayerName) {
+        const playerNameInput = document.getElementById('playerName');
+        if (playerNameInput) {
+          playerNameInput.value = savedPlayerName;
+        }
+      }
+    <% } %>
+  </script>
 </body>
 </html>

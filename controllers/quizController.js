@@ -4,9 +4,9 @@ const config = require('../config/config');
 
 exports.start = async (req, res) => {
   try {
-    const { playerName, quizId } = req.body;
+    const { playerName, quizId, eventId } = req.body;
     const selectedQuizId = parseInt(quizId) || 1;
-    const sessionId = await QuizSession.create(playerName || 'Joueur');
+    const sessionId = await QuizSession.create(playerName || 'Joueur', selectedQuizId, eventId || null);
 
     // Récupérer des questions aléatoires pour le quiz sélectionné
     const questions = await Question.getRandom(config.quiz.questionsPerSession, selectedQuizId);

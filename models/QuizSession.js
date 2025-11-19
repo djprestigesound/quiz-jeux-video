@@ -2,14 +2,14 @@ const db = require('../config/database');
 const { v4: uuidv4 } = require('uuid');
 
 class QuizSession {
-  static async create(playerName = 'Joueur') {
+  static async create(playerName = 'Joueur', quizId = 1, eventId = null) {
     await db.connect();
     const sessionId = uuidv4();
 
     await db.run(
-      `INSERT INTO quiz_sessions (id, player_name, score, total_questions, correct_answers)
-       VALUES (?, ?, 0, 0, 0)`,
-      [sessionId, playerName]
+      `INSERT INTO quiz_sessions (id, player_name, quiz_id, event_id, score, total_questions, correct_answers)
+       VALUES (?, ?, ?, ?, 0, 0, 0)`,
+      [sessionId, playerName, quizId, eventId]
     );
 
     return sessionId;

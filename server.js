@@ -28,10 +28,12 @@ app.use(cookieSession({
 const indexRoutes = require('./routes/index');
 const adminRoutes = require('./routes/admin');
 const quizRoutes = require('./routes/quiz');
+const eventRoutes = require('./routes/events');
 
 app.use('/', indexRoutes);
 app.use('/admin', adminRoutes);
 app.use('/quiz', quizRoutes);
+app.use('/events', eventRoutes);
 
 // Démarrage du serveur (local uniquement)
 if (require.main === module) {

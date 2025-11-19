@@ -19,6 +19,8 @@ CREATE TABLE IF NOT EXISTS questions (
 CREATE TABLE IF NOT EXISTS quiz_sessions (
   id TEXT PRIMARY KEY,
   player_name TEXT,
+  quiz_id INTEGER DEFAULT 1,
+  event_id INTEGER,
   qr_code TEXT,
   started_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   completed_at TIMESTAMP,
@@ -38,6 +40,32 @@ CREATE TABLE IF NOT EXISTS answers (
   FOREIGN KEY (session_id) REFERENCES quiz_sessions(id),
   FOREIGN KEY (question_id) REFERENCES questions(id)
 );
+
+-- Table des événements de quiz
+CREATE TABLE IF NOT EXISTS quiz_events (
+  id SERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  quiz_id INTEGER NOT NULL,
+  status TEXT DEFAULT 'waiting',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  started_at TIMESTAMP,
+  finished_at TIMESTAMP
+);
+
+-- Table des participants en attente
+CREATE TABLE IF NOT EXISTS event_participants (
+  id SERIAL PRIMARY KEY,
+  event_id INTEGER NOT NULL,
+  player_name TEXT NOT NULL,
+  joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (event_id) REFERENCES quiz_events(id),
+  UNIQUE(event_id, player_name)
+);
+
+-- Index pour améliorer les performances
+CREATE INDEX IF NOT EXISTS idx_quiz_events_status ON quiz_events(status);
+CREATE INDEX IF NOT EXISTS idx_event_participants_event_id ON event_participants(event_id);
+CREATE INDEX IF NOT EXISTS idx_quiz_sessions_event_id ON quiz_sessions(event_id);
 
 -- Insérer les questions de démonstration
 INSERT INTO questions (question, option_a, option_b, option_c, option_d, correct_answer, category) VALUES
