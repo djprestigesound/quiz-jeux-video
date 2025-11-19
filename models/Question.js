@@ -15,22 +15,36 @@ class Question {
 
   static async getRandom(limit = 10, quizId = 1) {
     await db.connect();
-    // Trier par difficulté pour progression : easy → medium → hard
-    const questions = await db.all(
-      `SELECT * FROM questions
-       WHERE quiz_id = ?
-       ORDER BY
-         CASE difficulty
-           WHEN 'easy' THEN 1
-           WHEN 'medium' THEN 2
-           WHEN 'hard' THEN 3
-           ELSE 2
-         END,
-         RANDOM()
-       LIMIT ?`,
-      [quizId, limit]
+    // Récupérer toutes les questions du quiz
+    const allQuestions = await db.all(
+      `SELECT * FROM questions WHERE quiz_id = ?`,
+      [quizId]
     );
-    return questions;
+
+    // Mélanger les questions (algorithme Fisher-Yates)
+    const shuffled = [...allQuestions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    // Trier par difficulté pour avoir une progression
+    shuffled.sort((a, b) => {
+      const difficultyOrder = { easy: 1, medium: 2, hard: 3 };
+      const diffA = difficultyOrder[a.difficulty] || 2;
+      const diffB = difficultyOrder[b.difficulty] || 2;
+      return diffA - diffB;
+    });
+
+    // Prendre les N premières questions (garantit unicité)
+    const selectedQuestions = shuffled.slice(0, Math.min(limit, shuffled.length));
+
+    // Vérification de sécurité : s'assurer qu'il n'y a pas de doublons par ID
+    const uniqueQuestions = selectedQuestions.filter((q, index, self) =>
+      index === self.findIndex(t => t.id === q.id)
+    );
+
+    return uniqueQuestions;
   }
 
   static async getByCategory(category) {
