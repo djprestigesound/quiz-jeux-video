@@ -103,13 +103,20 @@ class QuizSession {
   }
 
   // Nombre de joueurs actifs (sessions en cours)
+  // Ne garde que la session la plus récente par joueur (évite les doublons)
   static async getActiveSessions() {
     await db.connect();
     const sessions = await db.all(
-      `SELECT player_name, quiz_id, started_at
-       FROM quiz_sessions
-       WHERE completed_at IS NULL
-       ORDER BY started_at DESC
+      `SELECT s.player_name, s.quiz_id, s.started_at
+       FROM quiz_sessions s
+       INNER JOIN (
+         SELECT player_name, MAX(started_at) as max_started
+         FROM quiz_sessions
+         WHERE completed_at IS NULL
+         GROUP BY player_name
+       ) latest ON s.player_name = latest.player_name AND s.started_at = latest.max_started
+       WHERE s.completed_at IS NULL
+       ORDER BY s.started_at DESC
        LIMIT 10`
     );
     return sessions;
