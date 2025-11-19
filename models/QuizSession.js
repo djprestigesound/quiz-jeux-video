@@ -97,6 +97,19 @@ class QuizSession {
     return leaderboard;
   }
 
+  static async getLeaderboardByQuiz(quizId, limit = 10) {
+    await db.connect();
+    const leaderboard = await db.all(
+      `SELECT player_name, score, correct_answers, total_questions, completed_at
+       FROM quiz_sessions
+       WHERE completed_at IS NOT NULL AND quiz_id = ?
+       ORDER BY score DESC, completed_at ASC
+       LIMIT ?`,
+      [quizId, limit]
+    );
+    return leaderboard;
+  }
+
   static async getStats() {
     await db.connect();
     const stats = await db.get(

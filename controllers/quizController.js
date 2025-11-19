@@ -200,9 +200,19 @@ exports.leaderboard = async (req, res) => {
 // Mode écran géant pour projeter le classement
 exports.leaderboardDisplay = async (req, res) => {
   try {
-    const leaderboard = await QuizSession.getLeaderboard(20); // Top 20 pour l'écran géant
     const activePlayers = await QuizSession.getActiveSessions(); // Joueurs en cours
-    res.render('quiz/leaderboard-display', { leaderboard, activePlayers });
+
+    // Récupérer les leaderboards par quiz
+    const leaderboardQuiz1 = await QuizSession.getLeaderboardByQuiz(1, 10); // Top 10 Quiz Classiques
+    const leaderboardQuiz2 = await QuizSession.getLeaderboardByQuiz(2, 10); // Top 10 Quiz Modernes
+    const leaderboardQuiz3 = await QuizSession.getLeaderboardByQuiz(3, 10); // Top 10 Quiz Culture
+
+    res.render('quiz/leaderboard-display', {
+      leaderboardQuiz1,
+      leaderboardQuiz2,
+      leaderboardQuiz3,
+      activePlayers
+    });
   } catch (error) {
     console.error('Erreur lors de l\'affichage du classement géant:', error);
     res.status(500).send('Erreur lors de l\'affichage du classement');
