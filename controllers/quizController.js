@@ -189,8 +189,16 @@ exports.showResults = async (req, res) => {
 
 exports.leaderboard = async (req, res) => {
   try {
-    const leaderboard = await QuizSession.getLeaderboard(20);
-    res.render('quiz/leaderboard', { leaderboard });
+    // Récupérer les leaderboards par quiz
+    const leaderboardQuiz1 = await QuizSession.getLeaderboardByQuiz(1, 20);
+    const leaderboardQuiz2 = await QuizSession.getLeaderboardByQuiz(2, 20);
+    const leaderboardQuiz3 = await QuizSession.getLeaderboardByQuiz(3, 20);
+
+    res.render('quiz/leaderboard', {
+      leaderboardQuiz1,
+      leaderboardQuiz2,
+      leaderboardQuiz3
+    });
   } catch (error) {
     console.error('Erreur lors de l\'affichage du classement:', error);
     res.status(500).send('Erreur lors de l\'affichage du classement');

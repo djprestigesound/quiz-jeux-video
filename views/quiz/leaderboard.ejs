@@ -5,6 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Classement - Quiz Jeux Vidéo</title>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .quiz-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+      overflow-x: auto;
+    }
+
+    .quiz-tab {
+      flex: 1;
+      min-width: 100px;
+      padding: 15px 20px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .quiz-tab:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .quiz-tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .quiz-tab.active.quiz-1 {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .quiz-tab.active.quiz-2 {
+      color: #6366F1;
+      border-bottom-color: #6366F1;
+    }
+
+    .quiz-tab.active.quiz-3 {
+      color: #FBBF24;
+      border-bottom-color: #FBBF24;
+    }
+
+    .quiz-content {
+      display: none;
+    }
+
+    .quiz-content.active {
+      display: block;
+    }
+
+    .leaderboard-item-large {
+      border-left: 4px solid var(--primary);
+    }
+
+    .quiz-content.quiz-2 .leaderboard-item-large {
+      border-left-color: #6366F1;
+    }
+
+    .quiz-content.quiz-3 .leaderboard-item-large {
+      border-left-color: #FBBF24;
+    }
+
+    .quiz-content.quiz-2 .player-score-large {
+      color: #6366F1;
+    }
+
+    .quiz-content.quiz-3 .player-score-large {
+      color: #FBBF24;
+    }
+
+    @media (max-width: 768px) {
+      .quiz-tab {
+        font-size: 0.9rem;
+        padding: 12px 15px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -20,43 +104,131 @@
 
       <div class="page-header">
         <h1>🏆 Classement</h1>
-        <p>Les meilleurs joueurs</p>
+        <p>Les meilleurs joueurs par quiz</p>
       </div>
 
-      <div class="leaderboard-full">
-        <% if (leaderboard.length === 0) { %>
-          <div class="empty-state">
-            <p>Aucun joueur pour le moment.</p>
-            <p>Soyez le premier à jouer !</p>
-          </div>
-        <% } else { %>
-          <% leaderboard.forEach((entry, index) => { %>
-            <div class="leaderboard-item-large">
-              <div class="rank-badge rank-<%= index + 1 %>">
-                <% if (index === 0) { %>
-                  🥇
-                <% } else if (index === 1) { %>
-                  🥈
-                <% } else if (index === 2) { %>
-                  🥉
-                <% } else { %>
-                  #<%= index + 1 %>
-                <% } %>
-              </div>
+      <!-- Tabs pour les 3 quiz -->
+      <div class="quiz-tabs">
+        <button class="quiz-tab quiz-1 active" data-quiz="1">🕹️ Classiques</button>
+        <button class="quiz-tab quiz-2" data-quiz="2">🎮 Modernes</button>
+        <button class="quiz-tab quiz-3" data-quiz="3">🏆 Culture</button>
+      </div>
 
-              <div class="player-info">
-                <div class="player-name"><%= entry.player_name %></div>
-                <div class="player-stats">
-                  <%= entry.correct_answers %> / <%= entry.total_questions %> bonnes réponses
+      <!-- Contenu Quiz 1: Classiques -->
+      <div class="quiz-content quiz-1 active" data-quiz="1">
+        <div class="leaderboard-full">
+          <% if (leaderboardQuiz1.length === 0) { %>
+            <div class="empty-state">
+              <p>Aucun joueur pour le moment.</p>
+              <p>Soyez le premier à jouer au Quiz Classiques !</p>
+            </div>
+          <% } else { %>
+            <% leaderboardQuiz1.forEach((entry, index) => { %>
+              <div class="leaderboard-item-large">
+                <div class="rank-badge rank-<%= index + 1 %>">
+                  <% if (index === 0) { %>
+                    🥇
+                  <% } else if (index === 1) { %>
+                    🥈
+                  <% } else if (index === 2) { %>
+                    🥉
+                  <% } else { %>
+                    #<%= index + 1 %>
+                  <% } %>
+                </div>
+
+                <div class="player-info">
+                  <div class="player-name"><%= entry.player_name %></div>
+                  <div class="player-stats">
+                    <%= entry.correct_answers %> / <%= entry.total_questions %> bonnes réponses
+                  </div>
+                </div>
+
+                <div class="player-score-large">
+                  <%= entry.score %>
                 </div>
               </div>
+            <% }); %>
+          <% } %>
+        </div>
+      </div>
 
-              <div class="player-score-large">
-                <%= entry.score %>
-              </div>
+      <!-- Contenu Quiz 2: Modernes -->
+      <div class="quiz-content quiz-2" data-quiz="2">
+        <div class="leaderboard-full">
+          <% if (leaderboardQuiz2.length === 0) { %>
+            <div class="empty-state">
+              <p>Aucun joueur pour le moment.</p>
+              <p>Soyez le premier à jouer au Quiz Modernes !</p>
             </div>
-          <% }); %>
-        <% } %>
+          <% } else { %>
+            <% leaderboardQuiz2.forEach((entry, index) => { %>
+              <div class="leaderboard-item-large">
+                <div class="rank-badge rank-<%= index + 1 %>">
+                  <% if (index === 0) { %>
+                    🥇
+                  <% } else if (index === 1) { %>
+                    🥈
+                  <% } else if (index === 2) { %>
+                    🥉
+                  <% } else { %>
+                    #<%= index + 1 %>
+                  <% } %>
+                </div>
+
+                <div class="player-info">
+                  <div class="player-name"><%= entry.player_name %></div>
+                  <div class="player-stats">
+                    <%= entry.correct_answers %> / <%= entry.total_questions %> bonnes réponses
+                  </div>
+                </div>
+
+                <div class="player-score-large">
+                  <%= entry.score %>
+                </div>
+              </div>
+            <% }); %>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Contenu Quiz 3: Culture -->
+      <div class="quiz-content quiz-3" data-quiz="3">
+        <div class="leaderboard-full">
+          <% if (leaderboardQuiz3.length === 0) { %>
+            <div class="empty-state">
+              <p>Aucun joueur pour le moment.</p>
+              <p>Soyez le premier à jouer au Quiz Culture Gaming !</p>
+            </div>
+          <% } else { %>
+            <% leaderboardQuiz3.forEach((entry, index) => { %>
+              <div class="leaderboard-item-large">
+                <div class="rank-badge rank-<%= index + 1 %>">
+                  <% if (index === 0) { %>
+                    🥇
+                  <% } else if (index === 1) { %>
+                    🥈
+                  <% } else if (index === 2) { %>
+                    🥉
+                  <% } else { %>
+                    #<%= index + 1 %>
+                  <% } %>
+                </div>
+
+                <div class="player-info">
+                  <div class="player-name"><%= entry.player_name %></div>
+                  <div class="player-stats">
+                    <%= entry.correct_answers %> / <%= entry.total_questions %> bonnes réponses
+                  </div>
+                </div>
+
+                <div class="player-score-large">
+                  <%= entry.score %>
+                </div>
+              </div>
+            <% }); %>
+          <% } %>
+        </div>
       </div>
 
       <div class="page-actions">
@@ -73,16 +245,56 @@
   </div>
 
   <script>
+    // Gestion des tabs
+    const tabs = document.querySelectorAll('.quiz-tab');
+    const contents = document.querySelectorAll('.quiz-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const quizId = tab.dataset.quiz;
+
+        // Retirer la classe active de tous les tabs et contenus
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        // Ajouter la classe active au tab et contenu sélectionné
+        tab.classList.add('active');
+        document.querySelector(`.quiz-content[data-quiz="${quizId}"]`).classList.add('active');
+      });
+    });
+
     // Auto-refresh toutes les 5 secondes
     let refreshTimer;
     let lastUpdateTime = Date.now();
 
     function startAutoRefresh() {
       refreshTimer = setInterval(() => {
+        // Sauvegarder le quiz actif
+        const activeTab = document.querySelector('.quiz-tab.active');
+        const activeQuizId = activeTab ? activeTab.dataset.quiz : '1';
+        sessionStorage.setItem('activeQuiz', activeQuizId);
+
         // Reload la page pour mettre à jour le classement
         window.location.reload();
       }, 5000); // 5 secondes
     }
+
+    // Restaurer le quiz actif après le reload
+    window.addEventListener('load', () => {
+      const savedQuizId = sessionStorage.getItem('activeQuiz');
+      if (savedQuizId) {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        const targetTab = document.querySelector(`.quiz-tab[data-quiz="${savedQuizId}"]`);
+        const targetContent = document.querySelector(`.quiz-content[data-quiz="${savedQuizId}"]`);
+
+        if (targetTab && targetContent) {
+          targetTab.classList.add('active');
+          targetContent.classList.add('active');
+        }
+      }
+    });
 
     // Animation du point de refresh
     setInterval(() => {
