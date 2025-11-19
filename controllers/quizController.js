@@ -6,7 +6,38 @@ exports.start = async (req, res) => {
   try {
     const { playerName, quizId, eventId } = req.body;
     const selectedQuizId = parseInt(quizId) || 1;
-    const sessionId = await QuizSession.create(playerName || 'Joueur', selectedQuizId, eventId || null);
+    const normalizedPlayerName = playerName || 'Joueur';
+
+    // Vérifier si le joueur a déjà joué à ce quiz
+    const hasPlayed = await QuizSession.hasPlayedQuiz(normalizedPlayerName, selectedQuizId);
+    if (hasPlayed) {
+      return res.status(400).send(`
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Quiz déjà joué</title>
+          <link rel="stylesheet" href="/css/style.css">
+        </head>
+        <body>
+          <div class="container" style="text-align: center; padding: 50px 20px;">
+            <h1 style="font-size: 3rem; margin-bottom: 30px;">🎮</h1>
+            <h2 style="font-size: 2rem; margin-bottom: 20px;">Quiz déjà joué !</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 40px; color: var(--text-secondary);">
+              Vous avez déjà participé à ce quiz.<br>
+              Chaque joueur ne peut jouer qu'une seule fois par quiz.
+            </p>
+            <a href="/play" class="btn btn-primary" style="display: inline-block; padding: 15px 30px; font-size: 1.2rem; text-decoration: none;">
+              Retour à la sélection
+            </a>
+          </div>
+        </body>
+        </html>
+      `);
+    }
+
+    const sessionId = await QuizSession.create(normalizedPlayerName, selectedQuizId, eventId || null);
 
     // Récupérer des questions aléatoires pour le quiz sélectionné
     const questions = await Question.getRandom(config.quiz.questionsPerSession, selectedQuizId);

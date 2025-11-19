@@ -24,6 +24,15 @@ class QuizSession {
     return session;
   }
 
+  static async hasPlayedQuiz(playerName, quizId) {
+    await db.connect();
+    const session = await db.get(
+      'SELECT * FROM quiz_sessions WHERE player_name = ? AND quiz_id = ? LIMIT 1',
+      [playerName, quizId]
+    );
+    return session !== undefined && session !== null;
+  }
+
   static async updateScore(sessionId, score, correctAnswers, totalQuestions) {
     await db.connect();
     await db.run(
