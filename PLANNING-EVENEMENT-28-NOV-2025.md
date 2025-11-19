@@ -62,32 +62,15 @@
 
 ---
 
-### 🎵 15h30 - 16h15 | DJ MIX #3 - NETWORKING (45 min)
-- **Musique :** Mix énergique pour relancer
-- **Action :** Networking, échanges entre participants
-- **Écran :** Leaderboard global des 3 quiz
-- **Annonce :** Dernier quiz à 16h15 !
+### 🎵 15h30 - 16h15 | DJ MIX #3 - NETWORKING & TRANSITION (45 min)
+- **Musique :** Mix énergique puis progressivement plus calme
+- **Action :** Networking, échanges entre participants, calcul du classement général
+- **Écran :** Leaderboard global des 3 quiz avec animation "Calcul en cours..."
+- **Annonce :** Classement final à 16h15 !
 
 ---
 
-### 🎮 16h15 - 16h45 | QUIZ 4 - PERSONNAGES (30 min) ⚡ FINAL
-- **Thème :** Héros, méchants, univers 👾
-- **Questions :** Mario, Sonic, Link, Kratos, Lara Croft, Pikachu
-- **Public cible :** Fans de lore et personnages iconiques
-- **Animation DJ :** "Le quiz final ! Qui sera champion ?"
-- **Écran :** Classement final en construction
-
----
-
-### 🎵 16h45 - 17h15 | DJ MIX #4 - TRANSITION (30 min)
-- **Musique :** Mix calme, ambiance de clôture
-- **Action :** Calcul du classement général final
-- **Écran :** Animation "Calcul en cours..."
-- **Annonce :** Résultats à 17h15 !
-
----
-
-### 🏆 17h15 - 17h45 | CLASSEMENT FINAL (30 min)
+### 🏆 16h15 - 16h45 | CLASSEMENT FINAL (30 min) ⚡ FINAL
 - **Action :**
   - Affichage du **TOP 10 GÉNÉRAL** sur écran géant
   - Annonce des meilleurs scores au micro
@@ -98,9 +81,9 @@
 
 ---
 
-### 🎵 17h45 - 18h30 | CLÔTURE & DÉPART (45 min)
+### 🎵 16h45 - 18h30 | CLÔTURE & DÉPART (1h45)
 - **Musique :** DJ set de clôture (ambiance douce)
-- **Action :** Départ progressif des invités
+- **Action :** Départ progressif des invités, networking final
 - **Écran :** QR Code DJ Prestige Sound pour découvrir les services
 - **Démontage :** Préparation reprise matériel (18h-18h30)
 
@@ -110,11 +93,10 @@
 
 | Type d'activité | Nombre | Durée totale | Pourcentage |
 |----------------|--------|--------------|-------------|
-| 🎮 Sessions Quiz | 4 | 2h00 | 31% |
-| 🎵 DJ Mix | 5 | 3h45 | 58% |
+| 🎮 Sessions Quiz | 3 | 1h30 | 23% |
+| 🎵 DJ Mix | 4 | 4h30 | 69% |
 | 🏆 Cérémonie | 1 | 0h30 | 8% |
-| ⏱️ Pause technique | - | 0h15 | 3% |
-| **TOTAL** | **10** | **6h30** | **100%** |
+| **TOTAL** | **8** | **6h30** | **100%** |
 
 ---
 
@@ -123,7 +105,6 @@
 1. **Quiz Classiques** (12h30) → Nostalgie 80-90
 2. **Quiz Modernes** (13h45) → Actualité gaming
 3. **Quiz Culture** (15h00) → Esport & streamers
-4. **Quiz Personnages** (16h15) → Icônes du jeu vidéo
 
 **Stratégie :** Varier les thèmes pour toucher tous les profils de joueurs
 
@@ -178,9 +159,9 @@ https://quiz-jeux-video.vercel.app/admin
 > Prochain quiz dans [XX] minutes, préparez-vous !"
 
 ### Avant la finale
-> "Attention, c'est le dernier quiz ! Le Quiz Personnages !
+> "Attention, c'est le dernier quiz ! Le Quiz Culture Gaming !
 > C'est votre dernière chance de grimper au classement général !
-> Le classement final sera affiché à 17h15 ! 🏆"
+> Le classement final sera affiché à 16h15 ! 🏆"
 
 ---
 

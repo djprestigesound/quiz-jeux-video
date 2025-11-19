@@ -138,14 +138,13 @@
 
 ---
 
-## ✅ TEST 9: LES 4 QUIZ DIFFÉRENTS
+## ✅ TEST 9: LES 3 QUIZ DIFFÉRENTS
 
 ### Étapes:
 1. Teste chaque quiz séparément:
    - Quiz 1: Classiques
    - Quiz 2: Jeux Modernes
    - Quiz 3: Culture Gaming
-   - Quiz 4: Personnages
 
 ### Résultat attendu:
 - ✅ Chaque quiz a des questions différentes
@@ -194,8 +193,7 @@
 - [ ] 12h30: Annoncer Quiz 1 - Classiques
 - [ ] 13h45: Annoncer Quiz 2 - Modernes
 - [ ] 15h00: Annoncer Quiz 3 - Culture
-- [ ] 16h15: Annoncer Quiz 4 - Personnages
-- [ ] 17h15: Classement final
+- [ ] 16h15: Classement final
 
 ---
 
