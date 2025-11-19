@@ -105,6 +105,19 @@ class QuizSession {
   // Nombre de joueurs actifs (sessions en cours)
   static async getActiveSessions() {
     await db.connect();
+    const sessions = await db.all(
+      `SELECT player_name, quiz_id, started_at
+       FROM quiz_sessions
+       WHERE completed_at IS NULL
+       ORDER BY started_at DESC
+       LIMIT 10`
+    );
+    return sessions;
+  }
+
+  // Compter les joueurs actifs
+  static async countActiveSessions() {
+    await db.connect();
     const result = await db.get(
       `SELECT COUNT(*) as active_count
        FROM quiz_sessions

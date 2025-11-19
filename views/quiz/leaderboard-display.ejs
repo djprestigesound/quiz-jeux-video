@@ -17,14 +17,41 @@
     <p class="display-subtitle">Quiz Jeux Vidéo - Un événement VERDON & DJ Prestige Sound</p>
   </div>
 
+  <!-- Joueurs en cours -->
+  <% if (activePlayers && activePlayers.length > 0) { %>
+    <div class="active-players-section" style="background: linear-gradient(135deg, rgba(255, 0, 110, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%); padding: 30px; margin-bottom: 40px; border-radius: 20px; border: 2px solid rgba(255, 0, 110, 0.3);">
+      <h2 style="font-size: 2.5rem; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
+        <span style="margin-right: 15px;">🎮</span>
+        <span>Joueurs en cours</span>
+        <span style="margin-left: 15px; font-size: 1.5rem; color: var(--primary);">(<%= activePlayers.length %>)</span>
+      </h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px;">
+        <% activePlayers.forEach((player) => {
+          const quizNames = { 1: '🕹️ Classiques', 2: '🎮 Modernes', 3: '🏆 Culture' };
+          const timeElapsed = Math.floor((Date.now() - new Date(player.started_at).getTime()) / 1000 / 60);
+        %>
+          <div style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: space-between; animation: pulse-border 2s ease-in-out infinite;">
+            <div>
+              <div style="font-size: 1.5rem; font-weight: bold; color: var(--text-primary);"><%= player.player_name %></div>
+              <div style="font-size: 1.1rem; color: var(--text-secondary); margin-top: 5px;"><%= quizNames[player.quiz_id] || 'Quiz' %></div>
+            </div>
+            <div style="font-size: 1.8rem; animation: pulse 1.5s ease-in-out infinite;">⏱️</div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+
+  <!-- Classement -->
   <div class="display-leaderboard">
-    <% if (leaderboard.length === 0) { %>
+    <% if (leaderboard.length === 0 && (!activePlayers || activePlayers.length === 0)) { %>
       <div class="empty-state" style="text-align: center; padding: 100px 0; font-size: 2rem; color: var(--text-secondary);">
         <p style="font-size: 5rem; margin-bottom: 20px;">🎮</p>
         <p>Aucun joueur pour le moment</p>
         <p style="font-size: 1.5rem; margin-top: 20px;">En attente des participants...</p>
       </div>
-    <% } else { %>
+    <% } else if (leaderboard.length > 0) { %>
+      <h2 style="font-size: 2.5rem; margin-bottom: 30px; text-align: center;">🏆 Classement Final</h2>
       <% leaderboard.forEach((entry, index) => { %>
         <div class="display-item rank-<%= index + 1 %>">
           <div class="display-rank rank-<%= index + 1 %>">
@@ -60,6 +87,30 @@
       <span>Mise à jour automatique toutes les 3 secondes</span>
     </div>
   </div>
+
+  <style>
+    @keyframes pulse-border {
+      0%, 100% {
+        border-color: rgba(255, 0, 110, 0.5);
+        box-shadow: 0 0 10px rgba(255, 0, 110, 0.3);
+      }
+      50% {
+        border-color: rgba(255, 0, 110, 1);
+        box-shadow: 0 0 25px rgba(255, 0, 110, 0.6);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+  </style>
 
   <script>
     // Auto-refresh plus rapide pour l'écran géant (3 secondes)

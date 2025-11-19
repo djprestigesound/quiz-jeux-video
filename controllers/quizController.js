@@ -170,7 +170,8 @@ exports.leaderboard = async (req, res) => {
 exports.leaderboardDisplay = async (req, res) => {
   try {
     const leaderboard = await QuizSession.getLeaderboard(10); // Top 10 pour l'écran
-    res.render('quiz/leaderboard-display', { leaderboard });
+    const activePlayers = await QuizSession.getActiveSessions(); // Joueurs en cours
+    res.render('quiz/leaderboard-display', { leaderboard, activePlayers });
   } catch (error) {
     console.error('Erreur lors de l\'affichage du classement géant:', error);
     res.status(500).send('Erreur lors de l\'affichage du classement');
